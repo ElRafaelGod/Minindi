@@ -348,7 +348,8 @@ function haSidoValorado() {
             for(i = 0; i<listaValoraciones.length; i++){
                 mediaPuntuaciones += parseInt(listaValoraciones[i][3]);
             }
-            document.getElementById('valoracion').textContent = (mediaPuntuaciones / listaValoraciones.length) + " / 5 ";
+            resultado = mediaPuntuaciones / listaValoraciones.length
+            document.getElementById('valoracion').textContent = parseFloat(resultado).toFixed(2) + " / 5 ";
             document.getElementById('numValoraciones').textContent = "Valoraciones recibidas: "+ listaValoraciones.length;
             document.getElementById('numValoraciones').removeAttribute("hidden");
         }

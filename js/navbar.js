@@ -4,7 +4,7 @@ setInterval('comprobarBodyWidth()',200);
 function verifyRango(){
     // console.log("Verificando rango");
     comprobarCookies();
-    mostrarCookies();
+    // mostrarCookies();
     recuerdameActivado();
     var xmlhttp = new XMLHttpRequest();
     // xmlhttp.onreadystatechange = function () {
@@ -211,18 +211,6 @@ function acceptCookies() {
     //     }
     // }
     xmlhttp.open("POST", "php/cookiesSessions/colocarCookies.php", true);
-    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlhttp.send();
-}
-
-function mostrarCookies() {
-    var xmlhttp = new XMLHttpRequest();
-    // xmlhttp.onreadystatechange = function () {
-    //     if (this.readyState == 4 && this.status == 200) {
-    //         console.log("Mirando las cookies")
-    //     }
-    // }
-    xmlhttp.open("POST", "php/cookiesSessions/mirarCookies.php", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.send();
 }

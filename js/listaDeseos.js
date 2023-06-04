@@ -18,11 +18,9 @@ function verifyUser() {
     xmlhttp.addEventListener("load", function (datos) {
         const jsonDatos = JSON.parse(datos.target.response);
         console.log(jsonDatos);
-        if (jsonDatos != null) {
-            if (jsonDatos[0][10] != 1 ){
-                console.log("Se ha accedido aqui sin permiso. Echando");
-                window.location = "registro.html";
-            }
+        if (jsonDatos == null) {
+            console.log("Se ha accedido aqui sin permiso. Echando");
+            window.location = "registro.html";
         }
         else {
             console.log("Se ha accedido aqui sin permiso. Echando");
