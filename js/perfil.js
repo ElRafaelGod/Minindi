@@ -137,6 +137,19 @@ function ponerContenidoUser(jsonDatos) {
             document.getElementById('cardNoRedes').removeAttribute('hidden');
         }
 
+        if (jsonDatos[0][10] == 1 && jsonDatos[0][11] == 1) {
+            document.getElementById("imgPerfil").classList.add('border', 'border-4', 'border-info');
+        }
+        else if (jsonDatos[0][10] == 1) {
+            document.getElementById("imgPerfil").classList.add('border', 'border-4', 'border-warning');
+        }
+        else if (jsonDatos[0][11] == 1) {
+            document.getElementById("imgPerfil").classList.add('border', 'border-4', 'border-info');
+        }
+        else if (jsonDatos[0][10] == 0 && jsonDatos[0][11] == 0) {
+            document.getElementById("imgPerfil").classList.add('border', 'border-4', 'border-success');
+        }
+
     }
     else {
         console.log("No hay info, el user no existe");

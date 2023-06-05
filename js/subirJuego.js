@@ -105,6 +105,7 @@ function addJuego() {
         validarGeneros() &&
         validarCaptcha()) {
             // console.log("El formulario es valido. Increible");
+            activarPantallaCargando();
             return true;
             // return false;
     }

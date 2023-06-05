@@ -297,4 +297,8 @@ function comprobarBodyWidth() {
     }
 }
 
+function activarPantallaCargando() {
+    document.querySelector('.loading-overlay').style.display = 'flex';
+}
+
 

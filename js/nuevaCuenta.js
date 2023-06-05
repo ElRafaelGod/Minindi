@@ -52,15 +52,13 @@ function addUser() {
             document.getElementById("errorEmail").textContent = "Este correo ya esta en uso. Use otro diferente";
             return false;
         }
-        // else{
-        //     console.log("El correo es valido");
-        // }
 
         if(validarTwitter(enlaceTwitter.value) &&
            validarFacebook(enlaceFacebook.value) &&
            validarInstagram(enlaceInstagram.value)){
 
             console.log("Los valores no obligatorios son validos");
+            activarPantallaCargando();
             return true;
         }
         else{

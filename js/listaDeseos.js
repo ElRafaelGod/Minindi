@@ -6,29 +6,25 @@ $(document).ready(function () {
     buscarJuegosDeseados();
 });
 
-function verifyUser() {
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Parece que va bien")
-        }
-    }
-    xmlhttp.open("POST", "php/usuarios/buscarUsuarioActivo.php", false);
-    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlhttp.addEventListener("load", function (datos) {
-        const jsonDatos = JSON.parse(datos.target.response);
-        console.log(jsonDatos);
-        if (jsonDatos == null) {
-            console.log("Se ha accedido aqui sin permiso. Echando");
-            window.location = "registro.html";
-        }
-        else {
-            console.log("Se ha accedido aqui sin permiso. Echando");
-            window.location = "registro.html";
-        }
-    });
-    xmlhttp.send();
-}
+// function verifyUser() {
+//     var xmlhttp = new XMLHttpRequest();
+//     xmlhttp.onreadystatechange = function () {
+//         if (this.readyState == 4 && this.status == 200) {
+//             console.log("Parece que va bien")
+//         }
+//     }
+//     xmlhttp.open("POST", "php/usuarios/buscarUsuarioActivo.php", false);
+//     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+//     xmlhttp.addEventListener("load", function (datos) {
+//         const jsonDatos = JSON.parse(datos.target.response);
+//         console.log(jsonDatos);
+//         if (jsonDatos == null) {
+//             console.log("Se ha accedido aqui sin permiso. Echando");
+//             window.location = "registro.html";
+//         }
+//     });
+//     xmlhttp.send();
+// }
 
 function buscarJuegosDeseados() {
     var xmlhttp = new XMLHttpRequest();

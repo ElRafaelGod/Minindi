@@ -73,7 +73,7 @@
 			PRIMARY KEY (`id`)
 		);");
 
-		$bd1->query("CREATE TABLE `detalleVenta` (
+		$bd1->query("CREATE TABLE `detalleventa` (
 			`id` int NOT NULL AUTO_INCREMENT,
 			`idJuego` int NOT NULL,
 			`idVenta` int NOT NULL,
@@ -89,24 +89,24 @@
 			PRIMARY KEY (`id`)
 		);");
 
-		$bd1->query("CREATE TABLE `juegosComprados` (
+		$bd1->query("CREATE TABLE `juegoscomprados` (
 			`idUsuario` int NOT NULL,
 			`idJuego` int NOT NULL
 		);");
 
-		$bd1->query("CREATE TABLE `generoPorJuego` (
+		$bd1->query("CREATE TABLE `generoporjuego` (
 			`idJuego` int NOT NULL,
 			`idGenero` int NOT NULL
 		);");
 
-		$bd1->query("CREATE TABLE `imagenSecund` (
+		$bd1->query("CREATE TABLE `imagensecund` (
 			`id` int NOT NULL AUTO_INCREMENT,
 			`idJuego` int NOT NULL,
 			`rutaImagen` varchar(255) NOT NULL,
 			PRIMARY KEY (`id`)
 		);");
 
-		$bd1->query("CREATE TABLE `juegoPorDeveloper` (
+		$bd1->query("CREATE TABLE `juegopordeveloper` (
 			`idUsuario` int NOT NULL,
 			`idJuego` int NOT NULL,
 			`fechaSubida` varchar(10) NOT NULL

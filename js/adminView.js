@@ -652,7 +652,7 @@ function colocarJuego(rutaJuego) {
             console.log("Parece que va bien, colocando juego sin validar");
         }
     }
-    xmlhttp.open("POST", "php/juegos/colocarJuego.php", true);
+    xmlhttp.open("POST", "php/juegos/sacarNombreFichero.php", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.addEventListener("load", function (datos) {
         var nombreFichero = datos.target.response;

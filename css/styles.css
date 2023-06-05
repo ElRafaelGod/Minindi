@@ -157,10 +157,27 @@
 }
 
 /* ------------------------------------------------------------------------------ */
-/* Ediciones ListaJuego*/
+/* Ediciones ListaJuegos*/
 .offcanvas {
     bottom: initial;
-   }
+}
+
+#btn-flotante {
+    width: 50px;
+    height: 50px;
+    display: none; /* Ocultar inicialmente el botón */
+    position: fixed; /* Fijar el botón en la pantalla */
+    bottom: 20px; /* Posición vertical */
+    right: 20px; /* Posición horizontal */
+    z-index: 99; /* Colocar el botón por encima de otros elementos */
+    border: none;
+    outline: none;
+    background-color: #555;
+    color: white;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+}
 
 /* ------------------------------------------------------------------------------ */
 /* Ediciones DetalleJuego*/

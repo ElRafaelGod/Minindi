@@ -7,6 +7,8 @@ var ordenMuestra = "true";
 var masValorados = "false";
 var listaPuntuaciones = [];
 
+window.onscroll = function() {scrollFunction()};
+
 $(document).ready(function () {
     cargarGeneros();
 
@@ -341,6 +343,19 @@ function cargarMas() {
         // console.log("Ya se han puesto todos los juegos");
         document.getElementById("cargarMas").setAttribute("hidden", "true");
     }
+}
+
+
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    document.getElementById("btn-flotante").style.display = "block";
+  } else {
+    document.getElementById("btn-flotante").style.display = "none";
+  }
+}
+
+function irArriba() {
+  document.documentElement.scrollTop = 0; 
 }
 
 // function colocarMiniatura(idJuego) {

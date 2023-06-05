@@ -132,7 +132,7 @@
 
                 // echo $rutaDemo."<br><br>";
 
-                $bd1->query("INSERT into juegos (idUsuario,nombreJuego,descripcion,precio,enlaceJuego,miniatura,video,enlaceDemo,validado) VALUES 
+                if($bd1->query("INSERT into juegos (idUsuario,nombreJuego,descripcion,precio,enlaceJuego,miniatura,video,enlaceDemo,validado) VALUES 
                 ('$id',
                 '$tituloJuego',
                 '$descripcionJuego',
@@ -141,63 +141,63 @@
                 '$rutaMiniatura',
                 '$rutaVideo',
                 '$rutaDemo',
-                0)");
-
-        //Sacar la ID del juego metiendose, que será el ultimo del usuario
-                $lista=mysqli_query($bd1,"SELECT id FROM juegos WHERE idUsuario='$id'");
-                while ($reg=mysqli_fetch_array($lista))  
-                {
-                  $resp[]=$reg;
-                }
+                0)")){
+                    //Sacar la ID del juego metiendose, que será el ultimo del usuario
+                    $lista=mysqli_query($bd1,"SELECT id FROM juegos WHERE idUsuario='$id'");
+                    while ($reg=mysqli_fetch_array($lista))  
+                    {
+                      $resp[]=$reg;
+                    }
+                        
+                    $idJuego = $resp[count($resp) - 1][0];
             
-                $idJuego = $resp[count($resp) - 1][0];
-
-                date_default_timezone_set('UTC');
-                $fechaActual = date("d/m/Y");
-
-                $bd1->query("INSERT into juegopordeveloper (idUsuario,idJuego,fechaSubida) VALUES 
-                ('$id',
-                '$idJuego',
-                '$fechaActual')");
-
-                $idGenero = $resp[count($resp) - 1];
-
-                // //Metiendo los generos en la tabla generoporjuego
-                $listaGeneros=mysqli_query($bd1,"SELECT * FROM genero");
-                while ($reg=mysqli_fetch_array($listaGeneros))  
-                {
-                  $respGeneros[]=$reg;
-                }
-
-                for ($i=0; $i < count($respGeneros); $i++) { 
-                    if(isset($_POST['genero'.$i])){
-                        $idGenero = $_POST['genero'.$i];
-                        // echo "Existe, y además la ID del genero".$i." es ".$_POST['genero'.$i]."<br>";
-                        $bd1->query("INSERT into generoporjuego (idJuego,idGenero) VALUES 
+                    date_default_timezone_set('UTC');
+                    $fechaActual = date("d/m/Y");
+            
+                    $bd1->query("INSERT into juegopordeveloper (idUsuario,idJuego,fechaSubida) VALUES 
+                    ('$id',
+                    '$idJuego',
+                    '$fechaActual')");
+            
+                    $idGenero = $resp[count($resp) - 1];
+            
+                    // //Metiendo los generos en la tabla generoporjuego
+                    $listaGeneros=mysqli_query($bd1,"SELECT * FROM genero");
+                    while ($reg=mysqli_fetch_array($listaGeneros))  
+                    {
+                      $respGeneros[]=$reg;
+                    }
+            
+                    for ($i=0; $i < count($respGeneros); $i++) { 
+                        if(isset($_POST['genero'.$i])){
+                            $idGenero = $_POST['genero'.$i];
+                            // echo "Existe, y además la ID del genero".$i." es ".$_POST['genero'.$i]."<br>";
+                            $bd1->query("INSERT into generoporjuego (idJuego,idGenero) VALUES 
+                            ('$idJuego',
+                            '$idGenero')");
+                        }
+                    }
+            
+                    // //Metiendo las imagenes secundarias en la tabla imagenesSec
+                    for ($i=0; $i < count($imagenesSecundarias['name']); $i++) { 
+                        $extension = pathinfo($_FILES['imagenesSecundarias']['name'][$i], PATHINFO_EXTENSION);
+                        $rutaImagenSec=$rutaCarpetaJuegos.$tituloJuego."_user$id"."_id$numeroJuego/".$tituloJuego."_img".$i.".".$extension;
+            
+                        $ruta_destino =$direccionJuego."/".$tituloJuego."_img".$i.".".$extension; // Ruta completa de destino
+            
+                        if (move_uploaded_file($_FILES['imagenesSecundarias']['tmp_name'][$i], $ruta_destino)) {
+                            // echo 'El video se ha subido correctamente a la carpeta de destino <br>.';
+                        } else {
+                            // echo 'Error al subir el archivo.';
+                        }
+            
+                        $bd1->query("INSERT into imagensecund (idJuego,rutaImagen) VALUES 
                         ('$idJuego',
-                        '$idGenero')");
+                        '$rutaImagenSec')");
                     }
+                    header("Location: ../../index.html");
+                    die();
                 }
-
-                // //Metiendo las imagenes secundarias en la tabla imagenesSec
-                for ($i=0; $i < count($imagenesSecundarias['name']); $i++) { 
-                    $extension = pathinfo($_FILES['imagenesSecundarias']['name'][$i], PATHINFO_EXTENSION);
-                    $rutaImagenSec=$rutaCarpetaJuegos.$tituloJuego."_user$id"."_id$numeroJuego/".$tituloJuego."_img".$i.".".$extension;
-
-                    $ruta_destino =$direccionJuego."/".$tituloJuego."_img".$i.".".$extension; // Ruta completa de destino
-
-                    if (move_uploaded_file($_FILES['imagenesSecundarias']['tmp_name'][$i], $ruta_destino)) {
-                        // echo 'El video se ha subido correctamente a la carpeta de destino <br>.';
-                    } else {
-                        // echo 'Error al subir el archivo.';
-                    }
-
-                    $bd1->query("INSERT into imagensecund (idJuego,rutaImagen) VALUES 
-                    ('$idJuego',
-                    '$rutaImagenSec')");
-                }
-                header("Location: ../../index.html");
-                die();
             }
         } 
     }   
