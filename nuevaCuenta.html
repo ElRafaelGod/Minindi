@@ -145,19 +145,34 @@
                 <label for="email">Correo electronico</label>
                 <span id="errorEmail" class="text-danger" hidden>Introduce un correo electronico valido de formato "ejemplo@ejemplo.com"</span>
             </div>
-            <div class="form-floating mb-3">
-                <input type="password" class="form-control" id="password1" name="password1"
-                      placeholder="Password" onkeydown="applyHidden('errorPasswd1')">
-                <label for="password1">Contraseña</label>
-                <span id="errorPasswd1" class="text-danger" hidden>Introduce una contraseña valida, que contenga al menos 6 letras</span>
-            </div> 
-            <div class="form-floating mb-3">
-                <input type="password" class="form-control" id="password2" name="password2"
-                      placeholder="Password" onkeydown="applyHidden('errorPasswd2')">
-                <label for="password2">Confirmar contraseña</label>
-                <span id="errorPasswd2" class="text-danger" hidden>Las dos contraseñas no coinciden</span>
 
-            </div> 
+            <div class="mb-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="form-floating mb-3">
+                    <input type="password" class="form-control" id="password1" name="password1"
+                          placeholder="Password" onkeydown="applyHidden('errorPasswd1')">
+                    <label for="password1">Contraseña</label>
+                    <span id="errorPasswd1" class="text-danger" hidden>La contraseña introducida no cumple los minimos establecidos</span>
+                  </div> 
+                  <div class="form-floating mb-3">
+                    <input type="password" class="form-control" id="password2" name="password2"
+                          placeholder="Password" onkeydown="applyHidden('errorPasswd2')">
+                    <label for="password2">Confirmar contraseña</label>
+                    <span id="errorPasswd2" class="text-danger" hidden>Las dos contraseñas no coinciden</span>
+                </div> 
+                </div>
+                <div class="col">
+                  <span class="form-text">Condiciones minimas:
+                    <ul>
+                      <li>Longitud minima: 8</li>
+                      <li>Al menos 1 mayuscula</li>
+                      <li>Minimo 1 numero</li>
+                    </ul>
+                  </span>
+                </div>
+              </div>
+            </div>
 
             <hr class="hr opacity-100">
             <h4 class="text-center">Ajustes opcionales</h4>

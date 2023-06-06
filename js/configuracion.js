@@ -70,12 +70,25 @@ function newImagePerfil() {
 function newPassword() {
     var element = document.getElementById("newPassword");
     var newPassword = element.value;
-    if (newPassword.length > 5) {
-        modificarNewDataIndividual(newPassword, "modificarPasswd.php");
+    if (newPassword.length >= 8){
+        if(newPassword.match(/[A-Z]/)){
+            if(newPassword.match(/\d/)){
+                modificarNewDataIndividual(newPassword, "modificarPasswd.php");
+            }
+            else
+                document.getElementById("errorPassword").removeAttribute("hidden");
+        }
+        else
+            document.getElementById("errorPassword").removeAttribute("hidden");
     }
-    else {
+    else
         document.getElementById("errorPassword").removeAttribute("hidden");
-    }
+    // if (newPassword.length > 5) {
+    //     modificarNewDataIndividual(newPassword, "modificarPasswd.php");
+    // }
+    // else {
+    //     document.getElementById("errorPassword").removeAttribute("hidden");
+    // }
 }
 
 function newDescripcion() {

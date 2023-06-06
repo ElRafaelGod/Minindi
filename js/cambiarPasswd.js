@@ -95,10 +95,19 @@ function applyHidden(campo) {
 
 function validarPassword(password) {
     // console.log("Validando password: " + password);
-    if (password.length < 6)
-        return false;
+    if (password.length >= 8){
+        if(password.match(/[A-Z]/)){
+            if(password.match(/\d/)){
+                return true;
+            }
+            else
+                return false;
+        }
+        else
+            return false;
+    }
     else
-        return true;
+        return false;
 }
 
 function duplicaCorrecta(password, password2) {

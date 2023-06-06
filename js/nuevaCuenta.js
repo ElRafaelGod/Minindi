@@ -139,10 +139,19 @@ function validarCorreo(correo) {
 
 function validadPassword(password) {
     // console.log("Validando password: " + password);
-    if (password.length < 6)
-        return false;
+    if (password.length >= 8){
+        if(password.match(/[A-Z]/)){
+            if(password.match(/\d/)){
+                return true;
+            }
+            else
+                return false;
+        }
+        else
+            return false;
+    }
     else
-        return true;
+        return false;
 }
 
 function duplicaCorrecta(password, password2) {
@@ -213,12 +222,6 @@ function correoLibre(correo) {
             // console.log("Se supone que es false");
             estaLibre = false;
         }
-        // else{
-        //     console.log("Se supone que es true");
-        // }
-        
-        // console.log(estaLibre);
-
     });
     xmlhttp.send("email="+correo);
     return estaLibre;

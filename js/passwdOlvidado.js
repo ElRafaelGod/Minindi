@@ -78,3 +78,10 @@ function existeElCorreo(correo) {
     return correoExiste;
 }
 
+function validarCaptcha(){
+    console.log("Hola mundo");
+    document.getElementById("enviarCorreo").disabled = false;
+}
+
+
+

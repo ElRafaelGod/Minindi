@@ -1,9 +1,9 @@
 var listaUsers;
 var listaGeneros;
 var listaJuegos;
-
 verifyUser()
 
+//Función que verifica que el usuario conectado es considerado valido para visitar la pagina
 function verifyUser() {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
@@ -17,7 +17,7 @@ function verifyUser() {
         const jsonDatos = JSON.parse(datos.target.response);
         console.log(jsonDatos);
         if (jsonDatos != null) {
-            if (jsonDatos[0][11] != 1){
+            if (jsonDatos[0][11] != 1) {
                 console.log("Se ha accedido aqui sin permiso. Echando");
                 window.location = "index.html";
             }
@@ -34,12 +34,23 @@ function verifyUser() {
 // // Seccion Consultar User
 
 function tableUsers() {
-    var contentTBody="<tbody>";
-    // var tabla =  document.getElementById("tablaUser");
-    var tabla =  document.getElementById("tablaUsuarios");
+    var contentTBody = "<tbody>";
+    var tabla = document.getElementById("tablaUsuarios");
     tabla.innerHTML = '';
-    tabla.innerHTML += '<thead><tr><th>id</th><th>email</th><th>nombreCompleto</th><th>username</th><th>password</th><th>descripcion</th><th>imagenUsuario</th><th>userTwitter</th><th>userFacebook</th><th>userInstagram</th><th>esUser</th><th>esDeveloper</th><th>esAdmin</th><th>Editar</th><th>Eliminar</th></tr></thead>';
-   
+    tabla.innerHTML += '<thead><tr>' +
+        '<th>email</th>' +
+        '<th>nombreCompleto</th>' +
+        '<th>username</th>' +
+        '<th>descripcion</th>' +
+        '<th>userTwitter</th>' +
+        '<th>userFacebook</th>' +
+        '<th>userInstagram</th>' +
+        '<th>esDeveloper</th>' +
+        '<th>esAdmin</th>' +
+        '<th>Editar</th>' +
+        '<th>Eliminar</th>' +
+        '</tr></thead>';
+
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
@@ -50,24 +61,27 @@ function tableUsers() {
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.addEventListener("load", function (datos) {
         listaUsers = JSON.parse(datos.target.response);
-        for(var i = 0; i < listaUsers.length; i++){
+        for (var i = 0; i < listaUsers.length; i++) {
             contentTBody += "<tr>";
-             for(var j = 0; j < 13; j++){
-                 if(listaUsers[i][j] == '')
-                     contentTBody += "<td id='id"+i+"_"+j+"'>null</td>";
-                 else
-                     contentTBody += "<td id='id"+i+"_"+j+"'>"+listaUsers[i][j]+"</td>";
-             }
-             if(i==0)
-                 contentTBody +='<td></td><td></td>';
-             else{
-                 contentTBody += '<td> <button type="button" onclick="rellenarModalEditUser('+i+')" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editarUser"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16"> <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" /></svg></button></td>';
-                 contentTBody += '<td> <button type="button" onclick="rellenarModalDeleteUser('+i+')" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#borrarUser"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16"> <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" /> </svg> </button> </td>';
-             }
-             contentTBody += "</tr>";
-         }
-         contentTBody += "</tbody>";
-         tabla.innerHTML += contentTBody
+            contentTBody += "<td id='id" + i + "_0'>" + listaUsers[i][1] + "</td>" + //Email 
+                            "<td id='id" + i + "_1'>" + listaUsers[i][2] + "</td>" + //Nombre completo
+                            "<td id='id" + i + "_2'>" + listaUsers[i][3] + "</td>" + //Username
+                            "<td id='id" + i + "_3'>" + listaUsers[i][5] + "</td>" + //Descripcion
+                            "<td id='id" + i + "_4'>" + listaUsers[i][7] + "</td>" + //UserTwitter
+                            "<td id='id" + i + "_5'>" + listaUsers[i][8] + "</td>" + //UserFacebook
+                            "<td id='id" + i + "_6'>" + listaUsers[i][9] + "</td>" + //UserInstagram
+                            "<td id='id" + i + "_7'>" + listaUsers[i][10] + "</td>" + //EsDeveloper
+                            "<td id='id" + i + "_8'>" + listaUsers[i][11] + "</td>"; //EsAdmin
+            if (i == 0)
+                contentTBody += '<td></td><td></td>';
+            else {
+                contentTBody += '<td> <button type="button" onclick="rellenarModalEditUser(' + i + ')" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editarUser"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16"> <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" /></svg></button></td>';
+                contentTBody += '<td> <button type="button" onclick="rellenarModalDeleteUser(' + i + ')" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#borrarUser"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16"> <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" /> </svg> </button> </td>';
+            }
+            contentTBody += "</tr>";
+        }
+        contentTBody += "</tbody>";
+        tabla.innerHTML += contentTBody
     });
     xmlhttp.send();
 }
@@ -80,32 +94,32 @@ function rellenarModalEditUser(idListaUser) {
     document.getElementById("editTwitter").value = listaUsers[idListaUser][7];
     document.getElementById("editFacebook").value = listaUsers[idListaUser][8];
     document.getElementById("editInstagram").value = listaUsers[idListaUser][9];
-    if(listaUsers[idListaUser][11] == 1){
-        document.getElementById("developer1").checked  = true;
-        document.getElementById("developer2").checked  = false;
+    if (listaUsers[idListaUser][11] == 1) {
+        document.getElementById("developer1").checked = true;
+        document.getElementById("developer2").checked = false;
     }
-    else{
-        document.getElementById("developer1").checked  = false;
-        document.getElementById("developer2").checked  = true;
+    else {
+        document.getElementById("developer1").checked = false;
+        document.getElementById("developer2").checked = true;
     }
 
-    if(listaUsers[idListaUser][12] == 1){
-        document.getElementById("admin1").checked  = true;
-        document.getElementById("admin2").checked  = false;
+    if (listaUsers[idListaUser][12] == 1) {
+        document.getElementById("admin1").checked = true;
+        document.getElementById("admin2").checked = false;
     }
-    else{
-        document.getElementById("admin1").checked  = false;
-        document.getElementById("admin2").checked  = true;
+    else {
+        document.getElementById("admin1").checked = false;
+        document.getElementById("admin2").checked = true;
     }
 
     var modalBottom = document.getElementById("footerEditarUser");
     modalBottom.innerHTML = '';
     modalBottom.innerHTML += '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar sin guardar</button>';
-    modalBottom.innerHTML += '<button type="button" class="btn btn-primary" onclick="editarUser('+listaUsers[idListaUser][0]+')">Guardar cambios</button>';
+    modalBottom.innerHTML += '<button type="button" class="btn btn-primary" onclick="editarUser(' + listaUsers[idListaUser][0] + ')">Guardar cambios</button>';
 }
 
 function editarUser(idUser) {
-    console.log("Editando a usuario "+ idUser);
+    console.log("Editando a usuario " + idUser);
     var nombreCompleto = document.getElementById("editNombre").value;
     var username = document.getElementById("editUsername").value;
     var email = document.getElementById("editEmail").value;
@@ -114,12 +128,12 @@ function editarUser(idUser) {
     var enlaceFacebook = document.getElementById("editFacebook").value;
     var enlaceInstagram = document.getElementById("editInstagram").value;
 
-    if(document.getElementById("developer1").checked)
+    if (document.getElementById("developer1").checked)
         var esDeveloper = 1;
     else
         var esDeveloper = 0;
 
-    if(document.getElementById("admin1").checked)
+    if (document.getElementById("admin1").checked)
         var esAdmin = 1;
     else
         var esAdmin = 0;
@@ -132,29 +146,29 @@ function editarUser(idUser) {
     }
     xmlhttp.open("POST", "php/usuarios/modificarUsuario.php", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlhttp.send('id='+ idUser + 
-                 '&nombre='+ nombreCompleto + 
-                 '&username='+ username + 
-                 '&email='+ email + 
-                 '&descripcion='+ descripcion + 
-                 '&enlaceTwitter='+ enlaceTwitter + 
-                 '&enlaceFacebook='+ enlaceFacebook + 
-                 '&enlaceInstagram='+ enlaceInstagram + 
-                 '&esDeveloper='+ esDeveloper + 
-                 '&esAdmin='+ esAdmin );
+    xmlhttp.send('id=' + idUser +
+        '&nombre=' + nombreCompleto +
+        '&username=' + username +
+        '&email=' + email +
+        '&descripcion=' + descripcion +
+        '&enlaceTwitter=' + enlaceTwitter +
+        '&enlaceFacebook=' + enlaceFacebook +
+        '&enlaceInstagram=' + enlaceInstagram +
+        '&esDeveloper=' + esDeveloper +
+        '&esAdmin=' + esAdmin);
     window.location = "adminView.html";
 }
 
 function rellenarModalDeleteUser(idSelectUser) {
     var modalBottom = document.getElementById("footerBorrarUser");
-    document.getElementById("infoUser").textContent = listaUsers[idSelectUser][3] + " (id: "+listaUsers[idSelectUser][0]+")";
+    document.getElementById("infoUser").textContent = listaUsers[idSelectUser][3] + " (id: " + listaUsers[idSelectUser][0] + ")";
     modalBottom.innerHTML = '';
     modalBottom.innerHTML += '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>';
-    modalBottom.innerHTML += '<button type="button" class="btn btn-danger" onclick="borrarUser('+listaUsers[idSelectUser][0]+')">Eliminar</button>';
+    modalBottom.innerHTML += '<button type="button" class="btn btn-danger" onclick="borrarUser(' + listaUsers[idSelectUser][0] + ')">Eliminar</button>';
 }
 
 function borrarUser(idUser) {
-    console.log("Borrando a usuario "+ idUser);
+    console.log("Borrando a usuario " + idUser);
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
@@ -163,7 +177,7 @@ function borrarUser(idUser) {
     }
     xmlhttp.open("POST", "php/usuarios/borrarUsuario.php", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlhttp.send('id='+idUser);
+    xmlhttp.send('id=' + idUser);
     window.location = "adminView.html";
 }
 
@@ -171,11 +185,18 @@ function borrarUser(idUser) {
 // // Seccion Consultar Juegos
 
 function tableJuegos() {
-    var contentTBody="<tbody>";
-    var tabla =  document.getElementById("tablaJuegos");
+    var contentTBody = "<tbody>";
+    var tabla = document.getElementById("tablaJuegos");
     tabla.innerHTML = '';
-    tabla.innerHTML += '<thead><tr><th>id</th><th>idUsuario</th><th>nombreJuego</th><th>descripcion</th><th>precio</th><th>enlaceJuego</th><th>miniatura</th><th>video</th><th>enlaceDemo</th><th>validado</th><th>Editar</th><th>Eliminar</th></tr></thead>';
-   
+    tabla.innerHTML += '<thead><tr>' +
+                            '<th>nombreJuego</th>' +
+                            '<th>descripcion</th>' +
+                            '<th>precio</th>' +
+                            '<th>validado</th>' +
+                            '<th>Editar</th>' +
+                            '<th>Eliminar</th>' +
+                        '</tr></thead>';
+
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
@@ -187,26 +208,20 @@ function tableJuegos() {
     xmlhttp.addEventListener("load", function (datos) {
         listaJuegos = JSON.parse(datos.target.response);
         console.log(listaJuegos);
-        for(var i = 0; i < listaJuegos.length; i++){
+        for (var i = 0; i < listaJuegos.length; i++) {
             contentTBody += "<tr>";
-             for(var j = 0; j < 10; j++){
-                 if(listaJuegos[i][j] == '')
-                     contentTBody += "<td id='id"+i+"_"+j+"'>null</td>";
-                 else
-                     contentTBody += "<td id='id"+i+"_"+j+"'>"+listaJuegos[i][j]+"</td>";
-             }
-             contentTBody += '<td> <button type="button" onclick="rellenarModalEditJuegos('+i+')" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editarJuego"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16"> <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" /></svg></button></td>';
-             contentTBody += '<td> <button type="button" onclick="rellenarModalDeleteJuegos('+i+')" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#borrarJuego"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16"> <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" /> </svg> </button> </td>';
-             // if(i==0)
-             //     contentTBody +='<td></td><td></td>';
-             // else{
-             // }
-             contentTBody += "</tr>";
-         }
-         contentTBody += "</tbody>";
-         tabla.innerHTML += contentTBody
+            contentTBody += "<td id='id" + i + "_0'>" + listaJuegos[i][2] + "</td>" + //Nombre del juego 
+                            "<td id='id" + i + "_2'>" + listaJuegos[i][3] + "</td>" + //Descripcion del juego
+                            "<td id='id" + i + "_3'>" + listaJuegos[i][5] + "</td>" + //Precio del juego
+                            "<td id='id" + i + "_4'>" + listaJuegos[i][9] + "</td>" ; //EsValidado
+            contentTBody += '<td> <button type="button" onclick="rellenarModalEditJuegos(' + i + ')" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editarJuego"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16"> <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" /></svg></button></td>';
+            contentTBody += '<td> <button type="button" onclick="rellenarModalDeleteJuegos(' + i + ')" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#borrarJuego"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16"> <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" /> </svg> </button> </td>';
+            contentTBody += "</tr>";
+        }
+        contentTBody += "</tbody>";
+        tabla.innerHTML += contentTBody
     });
-    xmlhttp.send(); 
+    xmlhttp.send();
 }
 
 function rellenarModalEditJuegos(idListaJuego) {
@@ -214,28 +229,28 @@ function rellenarModalEditJuegos(idListaJuego) {
     document.getElementById("editDescripcionJuego").value = listaJuegos[idListaJuego][3];
     document.getElementById("editPrecioJuego").value = listaJuegos[idListaJuego][5];
 
-    if(listaJuegos[idListaJuego][9] == 1){
-        document.getElementById("validado1").checked  = true;
-        document.getElementById("validado2").checked  = false;
+    if (listaJuegos[idListaJuego][9] == 1) {
+        document.getElementById("validado1").checked = true;
+        document.getElementById("validado2").checked = false;
     }
-    else{
-        document.getElementById("validado1").checked  = false;
-        document.getElementById("validado2").checked  = true;
+    else {
+        document.getElementById("validado1").checked = false;
+        document.getElementById("validado2").checked = true;
     }
 
     var modalBottom = document.getElementById("footerEditarJuego");
     modalBottom.innerHTML = '';
     modalBottom.innerHTML += '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar sin guardar</button>';
-    modalBottom.innerHTML += '<button type="button" class="btn btn-primary" onclick="editarJuego('+listaJuegos[idListaJuego][0]+')">Guardar cambios</button>';
+    modalBottom.innerHTML += '<button type="button" class="btn btn-primary" onclick="editarJuego(' + listaJuegos[idListaJuego][0] + ')">Guardar cambios</button>';
 }
 
 function editarJuego(idJuego) {
-    console.log("Editando a juego "+ idJuego);
+    console.log("Editando a juego " + idJuego);
     var tituloJuego = document.getElementById("editTituloJuego").value;
     var descripcionJuego = document.getElementById("editDescripcionJuego").value;
     var precioJuego = document.getElementById("editPrecioJuego").value;
 
-    if(document.getElementById("validado1").checked)
+    if (document.getElementById("validado1").checked)
         var validado = 1;
     else
         var validado = 0;
@@ -248,25 +263,25 @@ function editarJuego(idJuego) {
     }
     xmlhttp.open("POST", "php/juegos/modificarJuegoAdmin.php", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlhttp.send('idJuego='+ idJuego + 
-                 '&titulo='+ tituloJuego + 
-                 '&descripcion='+ descripcionJuego + 
-                 '&precio='+ precioJuego +
-                 '&validado='+validado);
+    xmlhttp.send('idJuego=' + idJuego +
+        '&titulo=' + tituloJuego +
+        '&descripcion=' + descripcionJuego +
+        '&precio=' + precioJuego +
+        '&validado=' + validado);
 
     window.location = "adminView.html";
 }
 
 function rellenarModalDeleteJuegos(idSelectJuego) {
     var modalBottom = document.getElementById("footerBorrarJuego");
-    document.getElementById("infoJuego").textContent = listaJuegos[idSelectJuego][2] + " (id: "+listaJuegos[idSelectJuego][0]+") ";
+    document.getElementById("infoJuego").textContent = listaJuegos[idSelectJuego][2] + " (id: " + listaJuegos[idSelectJuego][0] + ") ";
     modalBottom.innerHTML = '';
     modalBottom.innerHTML += '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>';
-    modalBottom.innerHTML += '<button type="button" class="btn btn-danger" onclick="borrarJuego('+listaJuegos[idSelectJuego][0]+')">Eliminar</button>';
+    modalBottom.innerHTML += '<button type="button" class="btn btn-danger" onclick="borrarJuego(' + listaJuegos[idSelectJuego][0] + ')">Eliminar</button>';
 }
 
 function borrarJuego(idJuego) {
-    console.log("Borrando a juego "+ idJuego);
+    console.log("Borrando a juego " + idJuego);
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
@@ -275,18 +290,18 @@ function borrarJuego(idJuego) {
     }
     xmlhttp.open("POST", "php/juegos/borrarJuego.php", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlhttp.send('idJuego='+idJuego);
+    xmlhttp.send('idJuego=' + idJuego);
     window.location = "adminView.html";
 }
 
 // // --------------------------------------------------------------------------------------------------------------
 // // Seccion Consultar Genero
 function tableGeneros() {
-    var contentTBody="<tbody>";
-    var tabla =  document.getElementById("tablaGeneros");
+    var contentTBody = "<tbody>";
+    var tabla = document.getElementById("tablaGeneros");
     tabla.innerHTML = '';
     tabla.innerHTML += '<thead><tr><th>id</th><th>nombreGenero</th><th>descripcion</th><th>Editar</th><th>Eliminar</th></tr></thead>';
-   
+
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
@@ -297,20 +312,20 @@ function tableGeneros() {
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.addEventListener("load", function (datos) {
         listaGeneros = JSON.parse(datos.target.response);
-        for(var i = 0; i < listaGeneros.length; i++){
+        for (var i = 0; i < listaGeneros.length; i++) {
             contentTBody += "<tr>";
-             for(var j = 0; j < 3; j++){
-                 if(listaGeneros[i][j] == '')
-                     contentTBody += "<td id='id"+i+"_"+j+"'>null</td>";
-                 else
-                     contentTBody += "<td id='id"+i+"_"+j+"'>"+listaGeneros[i][j]+"</td>";
-             }
-             contentTBody += '<td> <button type="button" onclick="rellenarModalEditGenero('+i+')" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editarGenero"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16"> <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" /></svg></button></td>';
-             contentTBody += '<td> <button type="button" onclick="rellenarModalDeleteGenero('+i+')" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#borrarGenero"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16"> <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" /> </svg> </button> </td>';
-             contentTBody += "</tr>";
-         }
-         contentTBody += "</tbody>";
-         tabla.innerHTML += contentTBody;
+            for (var j = 0; j < 3; j++) {
+                if (listaGeneros[i][j] == '')
+                    contentTBody += "<td id='id" + i + "_" + j + "'>null</td>";
+                else
+                    contentTBody += "<td id='id" + i + "_" + j + "'>" + listaGeneros[i][j] + "</td>";
+            }
+            contentTBody += '<td> <button type="button" onclick="rellenarModalEditGenero(' + i + ')" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editarGenero"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16"> <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" /></svg></button></td>';
+            contentTBody += '<td> <button type="button" onclick="rellenarModalDeleteGenero(' + i + ')" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#borrarGenero"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16"> <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" /> </svg> </button> </td>';
+            contentTBody += "</tr>";
+        }
+        contentTBody += "</tbody>";
+        tabla.innerHTML += contentTBody;
     });
     xmlhttp.send();
 }
@@ -322,11 +337,11 @@ function rellenarModalEditGenero(idListaGenero) {
     var modalBottom = document.getElementById("footerEditarGenero");
     modalBottom.innerHTML = '';
     modalBottom.innerHTML += '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar sin guardar</button>';
-    modalBottom.innerHTML += '<button type="button" class="btn btn-primary" onclick="editarGenero('+listaGeneros[idListaGenero][0]+')">Guardar cambios</button>';
+    modalBottom.innerHTML += '<button type="button" class="btn btn-primary" onclick="editarGenero(' + listaGeneros[idListaGenero][0] + ')">Guardar cambios</button>';
 }
 
 function editarGenero(idUser) {
-    console.log("Editando a usuario "+ idUser);
+    console.log("Editando a usuario " + idUser);
     var nombreGenero = document.getElementById("editNombreGenero").value;
     var descripcionGenero = document.getElementById("editDescripcionGenero").value;
 
@@ -338,22 +353,22 @@ function editarGenero(idUser) {
     }
     xmlhttp.open("POST", "php/generos/modificarGenero.php", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlhttp.send('idGenero='+ idUser + 
-                 '&newNombreGenero='+ nombreGenero +
-                 '&newDescripcionGenero='+ descripcionGenero);
+    xmlhttp.send('idGenero=' + idUser +
+        '&newNombreGenero=' + nombreGenero +
+        '&newDescripcionGenero=' + descripcionGenero);
     window.location = "adminView.html";
 }
 
 function rellenarModalDeleteGenero(idSelectGenero) {
     var modalBottom = document.getElementById("footerBorrarGenero");
-    document.getElementById("infoGenero").textContent = listaGeneros[idSelectGenero][1] + " (id: "+listaGeneros[idSelectGenero][0]+")";
+    document.getElementById("infoGenero").textContent = listaGeneros[idSelectGenero][1] + " (id: " + listaGeneros[idSelectGenero][0] + ")";
     modalBottom.innerHTML = '';
     modalBottom.innerHTML += '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>';
-    modalBottom.innerHTML += '<button type="button" class="btn btn-danger" onclick="borrarGenero('+listaGeneros[idSelectGenero][0]+')">Eliminar</button>';
+    modalBottom.innerHTML += '<button type="button" class="btn btn-danger" onclick="borrarGenero(' + listaGeneros[idSelectGenero][0] + ')">Eliminar</button>';
 }
 
 function borrarGenero(idGenero) {
-    console.log("Borrando a usuario "+ idGenero);
+    console.log("Borrando a usuario " + idGenero);
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
@@ -362,7 +377,7 @@ function borrarGenero(idGenero) {
     }
     xmlhttp.open("POST", "php/generos/borrarGenero.php", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlhttp.send('id='+idGenero);
+    xmlhttp.send('id=' + idGenero);
     window.location = "adminView.html";
 }
 
@@ -382,15 +397,6 @@ function addUser() {
     var enlaceFacebook = document.getElementById("facebook");
     var enlaceInstagram = document.getElementById("instagram");
 
-    // return false;
-
-
-    // if (validarNombre(nombreCompleto.value) &&
-    //     validarUsername(username.value) &&
-    //     validarCorreo(email.value) &&
-    //     validadPassword(password1.value) &&
-    //     duplicaCorrecta(password1.value, password2.value) && 
-    //     validarCaptcha()) {
     if (validarNombre(nombreCompleto.value) &&
         validarUsername(username.value) &&
         validarCorreo(email.value) &&
@@ -399,27 +405,24 @@ function addUser() {
 
         console.log("Los valores obligatorios son validos");
 
-        if(!correoLibre(email.value)){
+        if (!correoLibre(email.value)) {
             console.log("El correo es invalido");
             return false;
         }
-        // else{
-        //     console.log("El correo es valido");
-        // }
 
-        if(validarTwitter(enlaceTwitter.value) &&
-           validarFacebook(enlaceFacebook.value) &&
-           validarInstagram(enlaceInstagram.value)){
+        if (validarTwitter(enlaceTwitter.value) &&
+            validarFacebook(enlaceFacebook.value) &&
+            validarInstagram(enlaceInstagram.value)) {
 
             console.log("Los valores no obligatorios son validos");
             return true;
         }
-        else{
-            if(!validarTwitter(enlaceTwitter.value))
+        else {
+            if (!validarTwitter(enlaceTwitter.value))
                 document.getElementById("errorTwitter").removeAttribute("hidden");
-            if(!validarFacebook(enlaceFacebook.value))
+            if (!validarFacebook(enlaceFacebook.value))
                 document.getElementById("errorFacebook").removeAttribute("hidden");;
-            if(!validarInstagram(enlaceInstagram.value))
+            if (!validarInstagram(enlaceInstagram.value))
                 document.getElementById("errorInstagram").removeAttribute("hidden");;
         }
         return false;
@@ -437,8 +440,6 @@ function addUser() {
             document.getElementById("errorPasswd1").removeAttribute("hidden");
         if (!duplicaCorrecta(password1.value, password2.value))
             document.getElementById("errorPasswd2").removeAttribute("hidden");
-        // if (!validarCaptcha())
-        //     document.getElementById("errorCaptcha").removeAttribute("hidden");
     }
     return false;
 
@@ -486,10 +487,19 @@ function validarCorreo(correo) {
 
 function validadPassword(password) {
     // console.log("Validando password: " + password);
-    if (password.length < 6)
-        return false;
+    if (password.length >= 8) {
+        if (password.match(/[A-Z]/)) {
+            if (password.match(/\d/)) {
+                return true;
+            }
+            else
+                return false;
+        }
+        else
+            return false;
+    }
     else
-        return true;
+        return false;
 }
 
 function duplicaCorrecta(password, password2) {
@@ -500,47 +510,38 @@ function duplicaCorrecta(password, password2) {
         return false;
 }
 
-function validarTwitter(urlTwitter){
-    if(urlTwitter.length == 0)
+function validarTwitter(urlTwitter) {
+    if (urlTwitter.length == 0)
         return true;
-    else{
-        if(urlTwitter.includes("twitter.com/"))
+    else {
+        if (urlTwitter.includes("twitter.com/"))
             return true;
         else
             return false;
     }
 }
 
-function validarFacebook(urlFacebook){
-    if(urlFacebook.length == 0)
+function validarFacebook(urlFacebook) {
+    if (urlFacebook.length == 0)
         return true;
-    else{
-        if(urlFacebook.includes("facebook.com/"))
+    else {
+        if (urlFacebook.includes("facebook.com/"))
             return true;
         else
             return false;
     }
 }
 
-function validarInstagram(urlInstagram){
-    if(urlInstagram.length == 0)
+function validarInstagram(urlInstagram) {
+    if (urlInstagram.length == 0)
         return true;
-    else{
-        if(urlInstagram.includes("instagram.com/"))
+    else {
+        if (urlInstagram.includes("instagram.com/"))
             return true;
         else
             return false;
     }
 }
-
-// function validarCaptcha(){
-//     var response = grecaptcha.getResponse();
-//     // console.log(response);
-//     if (response.length <= 0)
-//         return false;
-//     else
-//         return true;
-// }
 
 function correoLibre(correo) {
     // console.log("Entrando a mirara correro");
@@ -556,18 +557,13 @@ function correoLibre(correo) {
     xmlhttp.addEventListener("load", function (datos) {
         var respuesta = datos.target.response.toString();
         respuesta = respuesta.replaceAll(" ", '');
-        if(respuesta == "false"){
+        if (respuesta == "false") {
             // console.log("Se supone que es false");
             estaLibre = false;
         }
-        // else{
-        //     console.log("Se supone que es true");
-        // }
-        
-        // console.log(estaLibre);
 
     });
-    xmlhttp.send("email="+correo);
+    xmlhttp.send("email=" + correo);
     return estaLibre;
 }
 
@@ -590,10 +586,10 @@ function addGenero() {
                 console.log("Parece que va bien")
             }
         }
-        xmlhttp.open("POST", "php/generos/addGenero.php",true);
+        xmlhttp.open("POST", "php/generos/addGenero.php", true);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send("nombreGenero=" + nombreGenero.value +
-                     "&descripcionGenero=" + descripcionGenero.value);
+            "&descripcionGenero=" + descripcionGenero.value);
         window.location = "adminView.html";
     }
     else {
@@ -605,10 +601,10 @@ function addGenero() {
 // // --------------------------------------------------------------------------------------------------------------
 // // Seccion Revisar Juegos
 function obtenerJuegosNoValidados() {
-    var cartaJuego =  document.getElementById("cardJuegosNoValidados");
+    var cartaJuego = document.getElementById("cardJuegosNoValidados");
     cartaJuego.innerHTML = '';
 
-    
+
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
@@ -620,27 +616,27 @@ function obtenerJuegosNoValidados() {
     xmlhttp.addEventListener("load", function (datos) {
         listaJuegos = JSON.parse(datos.target.response);
         console.log(listaJuegos);
-        for(var i = 0; i < listaJuegos.length; i++){
+        for (var i = 0; i < listaJuegos.length; i++) {
             // colocarJuego(listaJuegos[i][5],listaJuegos[i][0]);
-            var contentTBody=   "<div class='card' id='cardJuego"+listaJuegos[i][0]+"'>" + 
-                                    "<div class='card-header'>" +
-                                        "<div class='row'>"+
-                                            "<div class='col-7'>"+
-                                                "<h2>"+listaJuegos[i][2]+"</h2>"+
-                                            "</div>"+
-                                            "<div class='col'>"+
-                                                "<button class='btn btn-danger float-end ms-3 mb-1' id='rechazarJuego"+listaJuegos[i][0]+"'>Rechazar</button>" +
-                                                "<button class='btn btn-dark float-end ms-3 mb-1'  id='validarJuego"+listaJuegos[i][0]+"'>Validar</button>" +
-                                                "<button class='btn btn-dark float-end ms-3 mb-1'  id='descargarJuego"+listaJuegos[i][0]+"'>Descargar</button>" +
-                                            "</div>"+
-                                        "</div>"+
-                                    "</div>"+
-                                "</div>";
+            var contentTBody = "<div class='card' id='cardJuego" + listaJuegos[i][0] + "'>" +
+                "<div class='card-header'>" +
+                "<div class='row'>" +
+                "<div class='col-7'>" +
+                "<h2>" + listaJuegos[i][2] + "</h2>" +
+                "</div>" +
+                "<div class='col'>" +
+                "<button class='btn btn-danger float-end ms-3 mb-1' id='rechazarJuego" + listaJuegos[i][0] + "'>Rechazar</button>" +
+                "<button class='btn btn-dark float-end ms-3 mb-1'  id='validarJuego" + listaJuegos[i][0] + "'>Validar</button>" +
+                "<button class='btn btn-dark float-end ms-3 mb-1'  id='descargarJuego" + listaJuegos[i][0] + "'>Descargar</button>" +
+                "</div>" +
+                "</div>" +
+                "</div>" +
+                "</div>";
             cartaJuego.innerHTML += contentTBody;
-            document.getElementById("descargarJuego"+listaJuegos[i][0]).setAttribute("onclick","colocarJuego('"+listaJuegos[i][4]+"')");
-            document.getElementById("validarJuego"+listaJuegos[i][0]).setAttribute("onclick","validarJuego('"+listaJuegos[i][0]+"')");
-            document.getElementById("rechazarJuego"+listaJuegos[i][0]).setAttribute("onclick","rechazarJuego('"+listaJuegos[i][0]+"')");
-         }
+            document.getElementById("descargarJuego" + listaJuegos[i][0]).setAttribute("onclick", "colocarJuego('" + listaJuegos[i][4] + "')");
+            document.getElementById("validarJuego" + listaJuegos[i][0]).setAttribute("onclick", "validarJuego('" + listaJuegos[i][0] + "')");
+            document.getElementById("rechazarJuego" + listaJuegos[i][0]).setAttribute("onclick", "rechazarJuego('" + listaJuegos[i][0] + "')");
+        }
     });
     xmlhttp.send();
 }
@@ -657,73 +653,53 @@ function colocarJuego(rutaJuego) {
     xmlhttp.addEventListener("load", function (datos) {
         var nombreFichero = datos.target.response;
         console.log(nombreFichero);
-        DownloadFromUrl(nombreFichero,rutaJuego);
+        DownloadFromUrl(nombreFichero, rutaJuego);
     });
-    xmlhttp.send("rutaJuego="+rutaJuego);
+    xmlhttp.send("rutaArchivo=" + rutaJuego);
 }
 
-function DownloadFromUrl(fileName,rutaJuego) {
+function DownloadFromUrl(fileName, rutaJuego) {
     var link = document.createElement('a');
     link.href = rutaJuego.replace('C:/wamp64/www/', '');
-    link.download = fileName.substring(0, (fileName.length-2));
+    link.download = fileName.substring(0, (fileName.length - 2));
 
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-}      
-
-function borrarFichero(rutaFichero) {
-    console.log(rutaFichero);
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Borrando elemento")
-        }
-    }
-    xmlhttp.open("POST", "php/borrar/borrarFichero.php", true);
-    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlhttp.send("rutaFichero=" + rutaFichero);
 }
 
 function validarJuego(idJuego) {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            console.log("Parece que va bien, validemos el juego de id "+idJuego);
+            console.log("Parece que va bien, validemos el juego de id " + idJuego);
         }
     }
     xmlhttp.open("POST", "php/juegos/validarJuego.php", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlhttp.send("idJuego="+idJuego);
-    // window.location = "adminView.html";
+    xmlhttp.send("idJuego=" + idJuego);
 
-    var elem = document.getElementById("cardJuego"+idJuego);
+    var elem = document.getElementById("cardJuego" + idJuego);
 
     elem.parentNode.removeChild(elem);
-
     mostrarToast('validacionAceptada');
 }
 
 function rechazarJuego(idJuego) {
-    console.log("Rechazando el juego con id "+idJuego);
+    console.log("Rechazando el juego con id " + idJuego);
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            console.log("Parece que va bien, rechazando el juego con id "+idJuego);
+            console.log("Parece que va bien, rechazando el juego con id " + idJuego);
         }
     }
     xmlhttp.open("POST", "php/juegos/borrarJuego.php", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlhttp.send("idJuego="+idJuego);
-    // window.location = "adminView.html";
+    xmlhttp.send("idJuego=" + idJuego);
 
-    // console.log("Rechazando el user "+idUser);
-
-    var elem = document.getElementById("cardJuego"+idJuego);
+    var elem = document.getElementById("cardJuego" + idJuego);
     elem.parentNode.removeChild(elem);
-
     mostrarToast('validacionRechazada');
-    // quitarSolicitudDeveloper(idUser);
 }
 
 // // --------------------------------------------------------------------------------------------------------------
@@ -745,11 +721,11 @@ function obtenerSolicitudesDeveloper() {
         if (listaIdUsers == null) {
             console.log("No hay solicitudes");
         }
-        else{
-            for(var i = 0; i < listaIdUsers.length; i++){
+        else {
+            for (var i = 0; i < listaIdUsers.length; i++) {
                 // obtenerDatosUser(listaIdUsers[i][1]);
                 colocarUser(listaIdUsers[i]);
-             }
+            }
         }
     });
     xmlhttp.send();
@@ -757,38 +733,38 @@ function obtenerSolicitudesDeveloper() {
 
 function colocarUser(datosUser) {
     console.log(datosUser);
-    var contentTBody=   "<div class='card' id='cardAscenso"+datosUser[0]+"'>" + 
-                            "<div class='card-header'>" +
-                                "<div class='row'>"+
-                                    "<div class='col-7'>"+
-                                        "<a class='text-decoration-none text-dark fs-2 userNameURL' href='perfil.html?id="+datosUser[0]+"'>"+datosUser[3]+"</a>"+
-                                    "</div>"+
-                                    "<div class='col'>"+
-                                        "<button class='btn btn-danger float-end ms-3 mb-1' id='rechazarAscenso"+datosUser[0]+"'>Rechazar</button>" +
-                                        "<button class='btn btn-success float-end ms-3 mb-1'  id='validarAscenso"+datosUser[0]+"'>Ascender usuario</button>" +
-                                    "</div>"+
-                                "</div>"+
-                            "</div>"+
-                        "</div>";
+    var contentTBody = "<div class='card' id='cardAscenso" + datosUser[0] + "'>" +
+        "<div class='card-header'>" +
+        "<div class='row'>" +
+        "<div class='col-7'>" +
+        "<a class='text-decoration-none text-dark fs-2 userNameURL' href='perfil.html?id=" + datosUser[0] + "'>" + datosUser[3] + "</a>" +
+        "</div>" +
+        "<div class='col'>" +
+        "<button class='btn btn-danger float-end ms-3 mb-1' id='rechazarAscenso" + datosUser[0] + "'>Rechazar</button>" +
+        "<button class='btn btn-success float-end ms-3 mb-1'  id='validarAscenso" + datosUser[0] + "'>Ascender usuario</button>" +
+        "</div>" +
+        "</div>" +
+        "</div>" +
+        "</div>";
 
     document.getElementById("cardUsuarioNoDeveloper").innerHTML += contentTBody;
 
-    document.getElementById("validarAscenso"+datosUser[0][0]).setAttribute("onclick","validarDeveloper('"+datosUser[0][0]+"')");
-    document.getElementById("rechazarAscenso"+datosUser[0][0]).setAttribute("onclick","rechazarDeveloper('"+datosUser[0][0]+"')");
+    document.getElementById("validarAscenso" + datosUser[0][0]).setAttribute("onclick", "validarDeveloper('" + datosUser[0][0] + "')");
+    document.getElementById("rechazarAscenso" + datosUser[0][0]).setAttribute("onclick", "rechazarDeveloper('" + datosUser[0][0] + "')");
 }
 
 function validarDeveloper(idUser) {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            console.log("Ascendiendo al user "+idUser);
+            console.log("Ascendiendo al user " + idUser);
         }
     }
     xmlhttp.open("POST", "php/usuarios/developerAscender.php", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlhttp.send("idUser="+idUser);
+    xmlhttp.send("idUser=" + idUser);
 
-    var elem = document.getElementById("cardAscenso"+idUser);
+    var elem = document.getElementById("cardAscenso" + idUser);
     elem.parentNode.removeChild(elem);
 
     mostrarToast('ascensoAceptado')
@@ -796,9 +772,9 @@ function validarDeveloper(idUser) {
 }
 
 function rechazarDeveloper(idUser) {
-    console.log("Rechazando el user "+idUser);
+    console.log("Rechazando el user " + idUser);
 
-    var elem = document.getElementById("cardAscenso"+idUser);
+    var elem = document.getElementById("cardAscenso" + idUser);
     elem.parentNode.removeChild(elem);
 
     mostrarToast('ascensoRechazado')
@@ -809,12 +785,12 @@ function quitarSolicitudDeveloper(idUser) {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            console.log("Ascendiendo al user "+idUser);
+            console.log("Ascendiendo al user " + idUser);
         }
     }
     xmlhttp.open("POST", "php/usuarios/developerBorrarSolicitud.php", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlhttp.send("idUser="+idUser);
+    xmlhttp.send("idUser=" + idUser);
 }
 
 function mostrarToast(toast) {

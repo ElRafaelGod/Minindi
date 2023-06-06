@@ -258,9 +258,18 @@
               <label for="newPassword" class="form-label col-4 col-form-label">Nueva contraseña:</label>
               <div class="input-group col">
                 <input type="password" class="form-control" id="newPassword" aria-label="Recipient's username"
-                  aria-describedby="button-addon2" onkeydown="applyHidden(errorPassword)"> 
+                  aria-describedby="button-addon2" onkeydown="applyHidden('errorPassword')"> 
               </div>
-              <span id="errorPassword" class="text-danger text-end" hidden>La contraseña no es valida</span>
+              <span id="errorPassword" class="text-danger text-end" hidden>La contraseña no cumple los minimos establecidos</span>
+            </div>
+            <div class="col">
+              <span class="form-text">Condiciones minimas:
+                <ul>
+                  <li>Longitud minima: 8</li>
+                  <li>Al menos 1 mayuscula</li>
+                  <li>Minimo 1 numero</li>
+                </ul>
+              </span>
             </div>
 
             <hr class="hr">
