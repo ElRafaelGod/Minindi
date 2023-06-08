@@ -1,4 +1,11 @@
 <?php
+//Llama a la base de datos, y una vez conectado:
+//  -Crea una venta que inserta en la tabla "Ventas", junto a la id del usuario y el precioTotal
+//  -Recoge la id de la nueva venta, para poder guardar correctamente los detalles de la venta
+//  -Recoge todos los juegos de la lista de favoritos del usuario activo, con el fin de retirar los juegos que se vayan a comprar y figuren
+//  -En bucle, se van introduciendo cada juego en "DetalleCompra" junto a la id de la venta, y en "JuegosComprados" junto a la
+    //id del usuario de la venta, y se va eliminando cada juego de "Favoritos" que coincida con el juego comprado
+//  -Por ultimo, se vacia la sesion de "JuegosComprados", de "PrecioTotal", y de "JuegosCesta"
     session_start();
     require("../conexion.php");
     $bd1=conexion();
@@ -7,7 +14,7 @@
         die("No ha podido conectarse con la base de datos: ".mysqli_connect_error());
     }
     else{
-        echo "Conexion realizada con exito <br>";
+        // echo "Conexion realizada con exito <br>";
         $idUser = $_SESSION['idUser'];
         $precioTotal = $_SESSION['precioTotal'];
 
@@ -51,7 +58,6 @@
                         $bd1->query("DELETE FROM favoritos WHERE idUsuario='$idUser' AND idJuego='$idJuego'");
                 }
             }
-            // unset($_SESSION['juegosCesta'][$key]);
         }
 
         foreach ($_SESSION['juegosCesta'] as $key => $idJuego) {

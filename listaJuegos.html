@@ -270,12 +270,18 @@
 
       <!-- Contenido Usuario -->
       <div class="col">
+        <div class="mb-3 card" id="cajaMuestraFiltros" hidden>
+          <h2 class="text-center mt-2" id="textoMuestraFiltros">Filtros aplicados:</h2>
+          <div class="mb-3 text-center" id="cajaFiltros">
+          </div>
+        </div>
 
         <div class="card mb-2">
           <div class="row m-2" id="cuerpoJuegos">
             <div class="m-3" id="noJuegos" hidden>
               <h2 class="text-center" id="textoNoJuegos">Parece que no hay ningun juego publicado...</h2>
             </div>
+            
 
           </div>
           <button class="btn btn-dark w-50 mx-auto m-3" id="cargarMas" onclick="cargarMas()" hidden>Cargar más</button>

@@ -1,9 +1,11 @@
 var datosUser;
 
+//A traves de jQuery, una vez que el documento ha sido cargado totalmente, carga su codigo dado
 $(document).ready(function () {
     dataUser();
 });
 
+//Función que busca y coloca la información del usuario conectado. Si no se recibe datos de usuario, se redirige a otra pagina
 function dataUser() {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open("POST", "php/usuarios/buscarUsuarioActivo.php", false);
@@ -12,6 +14,7 @@ function dataUser() {
         const jsonDatos = JSON.parse(datos.target.response);
         datosUser = jsonDatos;
         if (jsonDatos != null) {
+            //Si el usuario es developer, se elimina la caja para solicitar el ascenso
             if(jsonDatos[0][10] == 1){
                 var elem = document.getElementById("solicitarDeveloper");
                 elem.parentNode.removeChild(elem);
@@ -39,15 +42,18 @@ function dataUser() {
     xmlhttp.send();
 }
 
+//Función que oculta el campo mandado
 function applyHidden(campo) {
     if (!document.getElementById(campo).hasAttribute("hidden"))
         document.getElementById(campo).hidden = true;
 }
 
+//Función que solicita modifica el nombre de usuario por el nuevo mandado que cumpla las condiciones dadas
 function newUsername() {
     var element = document.getElementById("newUsername");
     var newUsername = element.value;
     if (newUsername.length > 5) {
+        activarPantallaCargando();
         modificarNewDataIndividual(newUsername, "modificarUsername.php");
     }
     else {
@@ -55,11 +61,13 @@ function newUsername() {
     }
 }
 
+//Función que modifica la imagen de perfil por el nuevo mandado que cumpla las condiciones dadas
 function newImagePerfil() {
     var element = document.getElementById("newImagen");
     var newImage = element.value;
     if (newImage != '') {
         console.log("Imagen valida, cambiando");
+        activarPantallaCargando();
     }
     else {
         document.getElementById("errorImagen").removeAttribute("hidden");
@@ -67,12 +75,14 @@ function newImagePerfil() {
     }
 }
 
+//Función que solicita modifica la contraseña del usuario por el nuevo mandado que cumpla las condiciones dadas
 function newPassword() {
     var element = document.getElementById("newPassword");
     var newPassword = element.value;
     if (newPassword.length >= 8){
         if(newPassword.match(/[A-Z]/)){
             if(newPassword.match(/\d/)){
+                activarPantallaCargando();
                 modificarNewDataIndividual(newPassword, "modificarPasswd.php");
             }
             else
@@ -83,20 +93,17 @@ function newPassword() {
     }
     else
         document.getElementById("errorPassword").removeAttribute("hidden");
-    // if (newPassword.length > 5) {
-    //     modificarNewDataIndividual(newPassword, "modificarPasswd.php");
-    // }
-    // else {
-    //     document.getElementById("errorPassword").removeAttribute("hidden");
-    // }
 }
 
+//Función que solicita modificar la descripcion del usuario por el nuevo mandado
 function newDescripcion() {
     var element = document.getElementById("newDescripcion");
     var newDescripcion = element.value;
+    activarPantallaCargando();
     modificarNewDataIndividual(newDescripcion, "modificarDescripcion.php");
 }
 
+//Función que modifica el campo deseado, llamando al modificador deseado, y mandandole los datos deseados
 function modificarNewDataIndividual(datos, urlPHP) {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open("POST", "php/usuarios/" + urlPHP, false);
@@ -105,6 +112,7 @@ function modificarNewDataIndividual(datos, urlPHP) {
     window.location = "configuracion.html";
 }
 
+//Función que modifica los enlaces a redes del usuario por los deseados, que cumplan las condiciones
 function modificarEnlaces() {
     var element1 = document.getElementById("facebookURL");
     var element2 = document.getElementById("twitterURL");
@@ -136,7 +144,7 @@ function modificarEnlaces() {
         }
 
     if (twitterValido && FacebookValido && InstagramValido) {
-
+        activarPantallaCargando();
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.open("POST", "php/usuarios/modificarEnlaces.php", false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -148,6 +156,7 @@ function modificarEnlaces() {
 
 }
 
+//Función que comprueba si el usuario ha solicitado ascender a desarrollador
 function comprobarSolicitud() {
     var solicitudMandada = false;
     var xmlhttp = new XMLHttpRequest();
@@ -163,6 +172,7 @@ function comprobarSolicitud() {
     return solicitudMandada;
 }
 
+//Función que registra que el usuario ha mandado la solicitud de ascenso
 function solicitarDeveloper() {
     document.getElementById("botonAscender").setAttribute("disabled",'true');
     document.getElementById("botonAscender").textContent = "Solicitud enviada";
@@ -173,12 +183,14 @@ function solicitarDeveloper() {
     mostrarToast("solicitudEnviada");
 }
 
+//Función para mostrar el mensaje emergente que se especifique
 function mostrarToast(toast) {
     var toastLiveExample = document.getElementById(toast);
     var toast = new bootstrap.Toast(toastLiveExample);
     toast.show();
 }
 
+//Función que elimina el usuario activo, y cierra su sesion
 function borrarUser() {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open("POST", "php/usuarios/borrarUsuarioActivo.php", false);

@@ -1,4 +1,5 @@
 <?php
+//Realiza conexión con la base de datos, y una vez conectado, modifica el precio del juego asociado en la tabla "Juegos"
     session_start();
 
     header('Access-Control-Allow-Origin: *'); 
@@ -10,7 +11,7 @@
         die("No ha podido conectarse con la base de datos: ".mysqli_connect_error());
     }
     else{
-        echo "Conexion realizada con exito <br>";
+        // echo "Conexion realizada con exito <br>";
         $newPrecio=$_POST['datos'];
         $id=$_POST['idJuego'];
 

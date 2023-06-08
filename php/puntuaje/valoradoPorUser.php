@@ -1,6 +1,7 @@
 <?php
+//Realiza conexión con la base de datos, y una vez conectado, se buscan el puntuaje de la tabla "Puntuaje" del juego especificado
+//realizado por el usuario conectado. Si hay resultado, se devuelve un true
     session_start();
-    
     header('Access-Control-Allow-Origin: *'); 
     header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
     require("../conexion.php");

@@ -1,4 +1,6 @@
 <?php
+//Realiza conexión con la base de datos, y una vez conectado, recoge la información de la tabla "JuegosComprados" del juego
+//deseado y asociado al usuario activo. Si hay contenido en la llamada, el juego ha sido comprado por el usuario, y devuelve un true
     session_start();
 
     require("../conexion.php");

@@ -1,4 +1,5 @@
 <?php
+//Realiza conexión con la base de datos, y una vez conectado, devuelve un listado completo de los usuarios de la tabla "Usuarios"
     header('Access-Control-Allow-Origin: *'); 
     header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
     require("../conexion.php");

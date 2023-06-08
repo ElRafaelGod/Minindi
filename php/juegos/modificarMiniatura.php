@@ -1,4 +1,8 @@
 <?php
+//Realiza conexión con la base de datos, y una vez conectado:
+//  1. Recoge las ruta guardada de la miniatura de la tabla "Juegos" del juego seleccionado. 
+//  2. Usando esa ruta, se guarda la nueva minatura en la carpeta del juego y sobreescribe la anterior  
+//  3. Tras un segundo de pausa, se redirige a la ruta guardada, y se borra la sesion "RutaGuardada"
     session_start();
 
     header('Access-Control-Allow-Origin: *'); 
@@ -12,14 +16,13 @@
         die("No ha podido conectarse con la base de datos: ".mysqli_connect_error());
     }
     else{
-        echo "Conexion realizada con exito <br>";
-        // $newImage=$_POST['datos'];
+        // echo "Conexion realizada con exito <br>";
 
         $url = $_SESSION['rutaGuardada'];
         $datos = parse_url($url);
         parse_str($datos['query'], $output);
         $idJuego = $output['id'];
-        echo $idJuego."<br>";
+        // echo $idJuego."<br>";
 
         $lista=mysqli_query($bd1,"SELECT miniatura FROM juegos WHERE id=$idJuego");
 
@@ -30,7 +33,7 @@
         }
 
         $rutaImagen = $resp[0][0];
-        echo $rutaImagen;
+        // echo $rutaImagen;
 
         $imagen = $_FILES['newMiniatura'];
 

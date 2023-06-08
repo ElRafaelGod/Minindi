@@ -1,7 +1,11 @@
+//A traves de jQuery, una vez que el documento ha sido cargado totalmente, carga su codigo dado
 $(document).ready(function () {
     verificarUser();
 });
 
+//Función que verifica qué usuario es del que se debe buscar la informacion. 
+// -Si la URL no tiene la variable ID, se buscará informacion sobre el usuario conectado
+// -Si la URL tiene la variable ID, se comprobará a que usuario pertenece la ID, y se buscara su informacion
 function verificarUser() {
     const valores = window.location.search;
     const urlParams = new URLSearchParams(valores);
@@ -43,6 +47,7 @@ function verificarUser() {
     }
 }
 
+//Función que ajustará el menu de navegación cuando se mire a un usuario diferente del conectado 
 function ajustesUserExterno(id) {
     // console.log("Viendo las cosas de '" + id + "'");
     document.getElementById("listaDeseos").hidden = true;
@@ -60,6 +65,7 @@ function ajustesUserExterno(id) {
     document.getElementById("juegosPublicados2").href = "juegosSubidos.html?id=" + id;
 }
 
+//Función que manda recoger la información del usuario activo, y la manda colocar en la pagina
 function dataUserConectado() {
     // console.log("Verificando rango conectado");
     var dataUser = obtenerDataUser("buscarUsuarioActivo.php");
@@ -68,12 +74,11 @@ function dataUserConectado() {
     if (dataUser[0][6] != null) {
         // console.log("El user externo tiene imagen, poniendo...");
         document.getElementById("imgPerfil").src = dataUser[0][6];
-        // colocarImagenPerfil(dataUser[0][0]);
     }
 }
 
+//Función que manda recoger la información de un usuario especificado, y la manda colocar en la pagina
 function dataUserExterno(id) {
-    // console.log("Verificando rango tio externo");
     const dataUser = obtenerDataUser("buscarUsuarioID.php", id);
     // console.log(dataUser);
     ponerContenidoUser(dataUser);
@@ -82,11 +87,11 @@ function dataUserExterno(id) {
         if (dataUser[0][6] != null && dataUser[0][6] != "") {
             document.getElementById("imgPerfil").src = dataUser[0][6];
             // console.log("El user externo tiene imagen, poniendo...");
-            // colocarImagenPerfil(id);
         }
     }
 }
 
+//Función que obtiene la información del usuario deseado segun la url mandada, y la devuelve
 function obtenerDataUser(url, id) {
     var xmlhttp = new XMLHttpRequest();
     var datosUser;
@@ -104,6 +109,7 @@ function obtenerDataUser(url, id) {
     return datosUser;
 }
 
+//Función que coloca la informacion del usuario mandado en la página
 function ponerContenidoUser(jsonDatos) {
     if (jsonDatos != null) {
         // console.log("Cogiendo datos del usuario");
@@ -157,50 +163,11 @@ function ponerContenidoUser(jsonDatos) {
     }
 }
 
+//Función que hace aparecer la caja de error de la página cuando no se cumple los requisitos
 function errorUsuarioNoExiste() {
     document.getElementById("contentCuerpo").hidden = true;
     document.getElementById("errorUser").hidden = false;
 }
 
-function colocarImagenPerfil(id) {
-    console.log("Colocando imagen externa...");
-    console.log(id);
-    var rutaTemporal;
-    var nombreArchivo;
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Parece que va bien, colocando imagen...")
-        }
-    }
-    xmlhttp.open("POST", "php/usuarios/imagenUserColocar.php", true);
-    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlhttp.addEventListener("load", function (datos) {
-        nombreArchivo = datos.target.response;
-        nombreArchivo = nombreArchivo.replaceAll(" ", "");
-        if (nombreArchivo != "") {
-            // rutaTemporal = "Storage/fotosPerfil/"+datos.target.response;
-            rutaTemporal = datos.target.response;
-            // console.log(rutaTemporal);
-            document.getElementById("imgPerfil").src = rutaTemporal;
-            // setTimeout('borrarFichero("' + rutaTemporal + '")', 1000);
-        }
-    });
-    xmlhttp.send('id=' + id);
-}
-
-// function borrarFichero(rutaFichero) {
-//     rutaFichero = rutaFichero.substring(0, (rutaFichero.length - 2));
-//     console.log(rutaFichero);
-//     var xmlhttp = new XMLHttpRequest();
-//     xmlhttp.onreadystatechange = function () {
-//         if (this.readyState == 4 && this.status == 200) {
-//             console.log("Borrando elemento")
-//         }
-//     }
-//     xmlhttp.open("POST", "php/borrar/borrarFichero.php", true);
-//     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-//     xmlhttp.send("rutaFichero=" + rutaFichero);
-// }
 
 

@@ -1,4 +1,6 @@
 <?php
+//Realiza conexión con la base de datos, y una vez conectado, se obtiene un listado completo de los usuarios de la tabla "Usuarios"
+//en la que el email mandado coincida. Si no hay coincidencias, es que el correo esta libre, y se devuelve un true
     header('Access-Control-Allow-Origin: *'); 
     header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
     require("../conexion.php");

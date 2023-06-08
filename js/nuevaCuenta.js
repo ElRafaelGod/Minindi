@@ -1,17 +1,19 @@
 verifyUser();
 
+//Función que verifica que el usuario conectado es considerado valido para visitar la pagina
 function verifyUser() {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Parece que va bien")
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Parece que va bien")
+    //     }
+    // }
     xmlhttp.open("POST", "php/usuarios/buscarUsuarioActivo.php", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.addEventListener("load", function (datos) {
         const jsonDatos = JSON.parse(datos.target.response);
-        console.log(jsonDatos);
+        // console.log(jsonDatos);
+        //Si los datos recibidos del usuario conectado no son null (hay una cuenta activa), se redirige a otra página
         if (jsonDatos != null) {
             console.log("Se ha accedido aqui sin permiso. Echando");
             window.location = "index.html";
@@ -20,6 +22,8 @@ function verifyUser() {
     xmlhttp.send();
 }
 
+//Función que verifica que los campos del formulario son correctos, y si los son, crea un nuevo usuario.
+//Sino, se muestra un mensaje de error en aquellos campos que sea incorrectos
 function addUser() {
     var nombreCompleto = document.getElementById("nombre");
     var username = document.getElementById("username");
@@ -27,13 +31,11 @@ function addUser() {
     var password1 = document.getElementById("password1");
     var password2 = document.getElementById("password2");
     //Valores opcionales
-    var imagen = document.getElementById("fotoPerfil");
-    var descripcion = document.getElementById("descripcionUser");
     var enlaceTwitter = document.getElementById("twitter");
     var enlaceFacebook = document.getElementById("facebook");
     var enlaceInstagram = document.getElementById("instagram");
 
-    // return false;
+    //Se comprueba que los campos principales son validos
     if (validarNombre(nombreCompleto.value) &&
         validarUsername(username.value) &&
         validarCorreo(email.value) &&
@@ -41,10 +43,9 @@ function addUser() {
         duplicaCorrecta(password1.value, password2.value) && 
         validarCaptcha()) {
 
-        console.log("Los valores obligatorios son validos");
-
+        //Se comprueba que el correo puesto este libre
         if(!correoLibre(email.value)){
-            console.log("El correo es invalido");
+            // console.log("El correo es invalido");
             window.scrollTo({
                 top:0, behavior:"smooth"
               })
@@ -53,11 +54,12 @@ function addUser() {
             return false;
         }
 
+        //Se comprueban los campos opcionales en caso de que se hayan rellenado
         if(validarTwitter(enlaceTwitter.value) &&
            validarFacebook(enlaceFacebook.value) &&
            validarInstagram(enlaceInstagram.value)){
 
-            console.log("Los valores no obligatorios son validos");
+            // console.log("Los valores no obligatorios son validos");
             activarPantallaCargando();
             return true;
         }
@@ -73,7 +75,7 @@ function addUser() {
     }
 
     else {
-        console.log("No es valido");
+        // console.log("No es valido");
         window.scrollTo({
             top:0, behavior:"smooth"
           })
@@ -97,11 +99,13 @@ function addUser() {
 
 }
 
+//Función que oculta el campo mandado
 function applyHidden(campo) {
     if (!document.getElementById(campo).hasAttribute("hidden"))
         document.getElementById(campo).hidden = true;
 }
 
+//Función que habilita el boton para validar el formulario al aceptarse los terminos y condiciones
 function confirmTerms(campo) {
     if (campo.checked)
         document.getElementById("submitButton").disabled = false;
@@ -109,16 +113,16 @@ function confirmTerms(campo) {
         document.getElementById("submitButton").disabled = true;
 }
 
+//Funcion que valida que el campo de "Nombre y apellidos" cumpla las condiciones dadas
 function validarNombre(nombre) {
-    // console.log("Validando nombre: " + nombre);
     if (nombre.length <= 0)
         return false;
     else
         return true;
 }
 
+//Funcion que valida que el campo de "Username" cumpla las condiciones dadas
 function validarUsername(username) {
-    // console.log("Validando username: " + username);
     if (username.length < 5) {
         return false;
     }
@@ -126,8 +130,8 @@ function validarUsername(username) {
         return true;
 }
 
+//Funcion que valida que el campo de "Email" cumpla las condiciones dadas
 function validarCorreo(correo) {
-    // console.log("Validando correo: " + correo);
     var validEmail = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
     if (validEmail.test(correo)) {
         return true;
@@ -137,6 +141,7 @@ function validarCorreo(correo) {
     }
 }
 
+//Funcion que valida que el campo de "Contraseña" cumpla las condiciones dadas
 function validadPassword(password) {
     // console.log("Validando password: " + password);
     if (password.length >= 8){
@@ -154,14 +159,15 @@ function validadPassword(password) {
         return false;
 }
 
+//Funcion que valida que "Contraseña" y "Confirmar contraseña" sean lo mismo
 function duplicaCorrecta(password, password2) {
-    // console.log("Validando password y password2: " + password + ", " + password2);
     if (password == password2)
         return true;
     else
         return false;
 }
 
+//Funcion que valida que el campo de "twitter" cumpla las condiciones dadas
 function validarTwitter(urlTwitter){
     if(urlTwitter.length == 0)
         return true;
@@ -173,6 +179,7 @@ function validarTwitter(urlTwitter){
     }
 }
 
+//Funcion que valida que el campo de "facebook" cumpla las condiciones dadas
 function validarFacebook(urlFacebook){
     if(urlFacebook.length == 0)
         return true;
@@ -184,6 +191,7 @@ function validarFacebook(urlFacebook){
     }
 }
 
+//Funcion que valida que el campo de "instagram" cumpla las condiciones dadas
 function validarInstagram(urlInstagram){
     if(urlInstagram.length == 0)
         return true;
@@ -195,24 +203,24 @@ function validarInstagram(urlInstagram){
     }
 }
 
+//Función que valida que el captcha ha sido aceptado
 function validarCaptcha(){
     var response = grecaptcha.getResponse();
-    // console.log(response);
     if (response.length <= 0)
         return false;
     else
         return true;
 }
 
+//Funcion que valida que el correo introducido no este ya en uso
 function correoLibre(correo) {
-    // console.log("Entrando a mirara correro");
     var estaLibre = true;
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Parece que va bien");
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Parece que va bien");
+    //     }
+    // }
     xmlhttp.open("POST", "php/usuarios/buscarUsuarioEmail.php", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.addEventListener("load", function (datos) {

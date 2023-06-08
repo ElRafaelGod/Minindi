@@ -1,14 +1,11 @@
 createBD();
 
+//A traves de jQuery, una vez que el documento ha sido cargado totalmente, carga su codigo dado
 $(document).ready(function () {
     ultimasNovedades();
 });
 
-// window.addEventListener('load', function() {
-//     // Ocultar la pantalla de carga
-//     document.querySelector('.loading-overlay').style.display = 'none';
-//   });
-
+//Función que crea la base de datos de la página en caso de no existir, y rellena de usuarios y generos si no hay ninguno guardado
 function createBD() {
     var xmlhttp = new XMLHttpRequest();
     // xmlhttp.onreadystatechange = function () {
@@ -19,18 +16,18 @@ function createBD() {
     xmlhttp.open("POST", "php/crearBD.php", false);
     xmlhttp.addEventListener("load", function (datos) {
         if (!adminExists()) {
-            console.log("Admin no existe. Añadiendo");
+            // console.log("Admin no existe. Añadiendo");
             addPrimerosUsers();
         }
-    
         if(!generosExist()){
-            console.log("No hay generos introducidos, metiendo...");
+            // console.log("No hay generos introducidos, metiendo...");
             addGenerosBase();
         }
     });
     xmlhttp.send();
 }
 
+//Función que comprueba si hay algun usuario guardado en la base de datos
 function adminExists() {
     var adminExists = true;
     var xmlhttp = new XMLHttpRequest();
@@ -53,6 +50,7 @@ function adminExists() {
     return adminExists;
 }
 
+//Función que introduce a varios usuarios predeterminados
 function addPrimerosUsers() {
     var xmlhttp = new XMLHttpRequest();
     // xmlhttp.onreadystatechange = function () {
@@ -65,6 +63,7 @@ function addPrimerosUsers() {
     xmlhttp.send();
 }
 
+//Función que comprueba si hay algun genero guardado en la base de datos
 function generosExist() {
     var generosExist = true;
     var xmlhttp = new XMLHttpRequest();
@@ -87,18 +86,20 @@ function generosExist() {
     return generosExist;
 }
 
+//Función que introduce varios generos predeterminados
 function addGenerosBase() {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Parece que va bien")
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Parece que va bien")
+    //     }
+    // }
     xmlhttp.open("POST", "php/generos/addGenerosBase.php",false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.send()
 }
 
+//Función que imprime los 6 ultimos juegos validados
 function ultimasNovedades() {
     var cuerpoJuegos =  document.getElementById("cuerpoNovedades");
 
@@ -113,21 +114,16 @@ function ultimasNovedades() {
     xmlhttp.addEventListener("load", function (datos) {
         listaJuegos = JSON.parse(datos.target.response);
         if(listaJuegos == null){
-            console.log("No hay juegos validados!!!!");
             document.getElementById("noJuegos").removeAttribute("hidden");
-            // document.getElementById("footerFaltante").classList.add("visually-hidden");
         }
         else{
             document.getElementById("noJuegos").hidden = true;
             listaJuegos.reverse();
-            // console.log(listaJuegos);
-
             if(listaJuegos.length < 6)
                 var longitud = listaJuegos.length;
             else
                 var longitud = 6;
 
-            // console.log(longitud);
             for (var i = 0; i < longitud; i++) {
                 var contentCuerpoJuegos = '<div style="display: none;" class="col-md-2 col-sm-4 col-12 my-3 box'+listaJuegos[i][0]+'">' +
                                             '<div class="card cardJuego">'+
@@ -142,34 +138,20 @@ function ultimasNovedades() {
                  
                 cuerpoJuegos.innerHTML += contentCuerpoJuegos;
                 setTimeout('fadeInJuego(".box'+listaJuegos[i][0]+'")', 200);
-                // setTimeout('borrarFichero("'+rutaTemporal+'")',1000);
             }
         }
     });
     xmlhttp.send();
 }
 
+//Función que con jQuery hace aparecer la caja determinada
 function fadeInJuego(idCaja) {
     $(idCaja).fadeIn(1000); 
 }
 
-// function colocarMiniatura(idJuego) {
-//     var rutaRecogida;
-//     var xmlhttp = new XMLHttpRequest();
-//     xmlhttp.onreadystatechange = function () {
-//         if (this.readyState == 4 && this.status == 200) {
-//             console.log("Parece que va bien, colocando la miniatura...")
-//         }
-//     }
-//     xmlhttp.open("POST", "php/juegos/miniaturaColocar.php", false);
-//     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-//     xmlhttp.addEventListener("load", function (datos) {
-//         rutaRecogida = datos.target.response;
-//     });
-//     xmlhttp.send("idJuego="+idJuego);
-//     return rutaRecogida;
-// }
-
+//Función que:
+//-Si el usuario tiene una cuenta encendida, lo redigire a configuracion
+//-Si no, guarda el enlace a redirigir, y lo lleva a registro
 function pedirDeveloper() {
     var xmlhttp = new XMLHttpRequest();
     // xmlhttp.onreadystatechange = function () {
@@ -181,20 +163,17 @@ function pedirDeveloper() {
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.addEventListener("load", function (datos) {
         respuesta = datos.target.response;
-        // console.log(respuesta);
         if(respuesta == 1){
-            // console.log("Hay un usuario conectado");
             window.location = "configuracion.html";
         }
         else{
-            // console.log("No hay usuario conectado");
-            redirigirRegistro()
-            // window.location = "registro.html";
+            redirigirRegistro();
         }
     });
     xmlhttp.send();
 }
 
+//Función que guarda la ruta a redirigir tras el inicio de sesión
 function redirigirRegistro(){
     console.log(window.location.host);
     var xmlhttp = new XMLHttpRequest();
@@ -208,17 +187,3 @@ function redirigirRegistro(){
     xmlhttp.send("ruta=configuracion.html");
     window.location = "registro.html";
 }
-
-// function borrarFichero(rutaFichero) {
-//     rutaFichero = rutaFichero.substring(0, (rutaFichero.length-2));
-//     console.log(rutaFichero);
-//     var xmlhttp = new XMLHttpRequest();
-//     xmlhttp.onreadystatechange = function () {
-//         if (this.readyState == 4 && this.status == 200) {
-//             console.log("Borrando elemento")
-//         }
-//     }
-//     xmlhttp.open("POST", "php/borrar/borrarFichero.php", true);
-//     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-//     xmlhttp.send("rutaFichero="+rutaFichero);
-// }

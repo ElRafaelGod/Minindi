@@ -1,6 +1,7 @@
 <?php
+//Realiza conexion con la base de datos, y una vez conectado, busca los juegos de la tabla "Favoritos" del usuario conectado,
+//y devuelve el resultado
     session_start();
-
     require("../conexion.php");
     $bd1=conexion();
 

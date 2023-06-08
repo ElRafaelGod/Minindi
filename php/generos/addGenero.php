@@ -1,4 +1,6 @@
 <?php
+//Realiza conexión con la base de datos, y una vez conectado, introduce en la tabla "Genero" un nuevo registro, con el nombre
+//y la descripción que se mandan
     header('Access-Control-Allow-Origin: *'); 
     header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
     require("../conexion.php");
@@ -8,11 +10,11 @@
         die("No ha podido conectarse con la base de datos: ".mysqli_connect_error());
     }
     else{
-        echo "Conexion realizada con exito <br>";
+        // echo "Conexion realizada con exito <br>";
         $nombreGenero = $_POST['nombreGenero'];
         $descripcionGenero = $_POST['descripcionGenero'];
-        echo $nombreGenero.'<br>';
-        echo $descripcionGenero.'<br>';
+        // echo $nombreGenero.'<br>';
+        // echo $descripcionGenero.'<br>';
 
         $bd1->query("INSERT into genero (nombreGenero,descripcion) VALUES 
             ('$nombreGenero',

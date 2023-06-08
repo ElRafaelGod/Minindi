@@ -1,4 +1,5 @@
 <?php
+//Función que crea las tablas de la base de datos de la pagina web 
     header('Access-Control-Allow-Origin: *'); 
     header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
     require("conexion.php");

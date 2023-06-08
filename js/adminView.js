@@ -6,24 +6,25 @@ verifyUser()
 //Función que verifica que el usuario conectado es considerado valido para visitar la pagina
 function verifyUser() {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Parece que va bien")
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Parece que va bien")
+    //     }
+    // }
     xmlhttp.open("POST", "php/usuarios/buscarUsuarioActivo.php", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.addEventListener("load", function (datos) {
         const jsonDatos = JSON.parse(datos.target.response);
-        console.log(jsonDatos);
+        // console.log(jsonDatos);
+        //Si los datos recibidos del usuario conectado son null (no hay una cuenta activa), o no es administrador, se redirige a otra página
         if (jsonDatos != null) {
             if (jsonDatos[0][11] != 1) {
-                console.log("Se ha accedido aqui sin permiso. Echando");
+                // console.log("Se ha accedido aqui sin permiso. Echando");
                 window.location = "index.html";
             }
         }
         else {
-            console.log("Se ha accedido aqui sin permiso. Echando");
+            // console.log("Se ha accedido aqui sin permiso. Echando");
             window.location = "index.html";
         }
     });
@@ -33,6 +34,7 @@ function verifyUser() {
 // // --------------------------------------------------------------------------------------------------------------
 // // Seccion Consultar User
 
+//Función que crea la tabla con la información de los usuarios
 function tableUsers() {
     var contentTBody = "<tbody>";
     var tabla = document.getElementById("tablaUsuarios");
@@ -52,11 +54,11 @@ function tableUsers() {
         '</tr></thead>';
 
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Parece que va bien");
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Parece que va bien");
+    //     }
+    // }
     xmlhttp.open("POST", "php/usuarios/buscarUsuario.php", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.addEventListener("load", function (datos) {
@@ -86,6 +88,7 @@ function tableUsers() {
     xmlhttp.send();
 }
 
+//Función que rellena la ventana emergente para editar un usuario con la información del usuario deseado
 function rellenarModalEditUser(idListaUser) {
     document.getElementById("editNombre").value = listaUsers[idListaUser][2];
     document.getElementById("editUsername").value = listaUsers[idListaUser][3];
@@ -118,8 +121,8 @@ function rellenarModalEditUser(idListaUser) {
     modalBottom.innerHTML += '<button type="button" class="btn btn-primary" onclick="editarUser(' + listaUsers[idListaUser][0] + ')">Guardar cambios</button>';
 }
 
+//Función que edita la información del usuario deseado con la información mandada
 function editarUser(idUser) {
-    console.log("Editando a usuario " + idUser);
     var nombreCompleto = document.getElementById("editNombre").value;
     var username = document.getElementById("editUsername").value;
     var email = document.getElementById("editEmail").value;
@@ -139,11 +142,11 @@ function editarUser(idUser) {
         var esAdmin = 0;
 
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Parece que va bien");
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Parece que va bien");
+    //     }
+    // }
     xmlhttp.open("POST", "php/usuarios/modificarUsuario.php", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.send('id=' + idUser +
@@ -159,6 +162,7 @@ function editarUser(idUser) {
     window.location = "adminView.html";
 }
 
+//Función que rellena la ventana emergente para borrar un usuario con la información del usuario deseado
 function rellenarModalDeleteUser(idSelectUser) {
     var modalBottom = document.getElementById("footerBorrarUser");
     document.getElementById("infoUser").textContent = listaUsers[idSelectUser][3] + " (id: " + listaUsers[idSelectUser][0] + ")";
@@ -167,14 +171,14 @@ function rellenarModalDeleteUser(idSelectUser) {
     modalBottom.innerHTML += '<button type="button" class="btn btn-danger" onclick="borrarUser(' + listaUsers[idSelectUser][0] + ')">Eliminar</button>';
 }
 
+//Función que borrar al usuario deseado
 function borrarUser(idUser) {
-    console.log("Borrando a usuario " + idUser);
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Parece que va bien");
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Parece que va bien");
+    //     }
+    // }
     xmlhttp.open("POST", "php/usuarios/borrarUsuario.php", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.send('id=' + idUser);
@@ -184,6 +188,7 @@ function borrarUser(idUser) {
 // // --------------------------------------------------------------------------------------------------------------
 // // Seccion Consultar Juegos
 
+//Función que crea la tabla con la información de los juegos
 function tableJuegos() {
     var contentTBody = "<tbody>";
     var tabla = document.getElementById("tablaJuegos");
@@ -198,11 +203,11 @@ function tableJuegos() {
                         '</tr></thead>';
 
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Parece que va bien");
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Parece que va bien");
+    //     }
+    // }
     xmlhttp.open("POST", "php/juegos/buscarJuegos.php", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.addEventListener("load", function (datos) {
@@ -224,6 +229,7 @@ function tableJuegos() {
     xmlhttp.send();
 }
 
+//Función que rellena la ventana emergente para editar un juego con la información del juego deseado
 function rellenarModalEditJuegos(idListaJuego) {
     document.getElementById("editTituloJuego").value = listaJuegos[idListaJuego][2];
     document.getElementById("editDescripcionJuego").value = listaJuegos[idListaJuego][3];
@@ -244,8 +250,8 @@ function rellenarModalEditJuegos(idListaJuego) {
     modalBottom.innerHTML += '<button type="button" class="btn btn-primary" onclick="editarJuego(' + listaJuegos[idListaJuego][0] + ')">Guardar cambios</button>';
 }
 
+//Función que edita la información del juego deseado con la información mandada
 function editarJuego(idJuego) {
-    console.log("Editando a juego " + idJuego);
     var tituloJuego = document.getElementById("editTituloJuego").value;
     var descripcionJuego = document.getElementById("editDescripcionJuego").value;
     var precioJuego = document.getElementById("editPrecioJuego").value;
@@ -256,11 +262,11 @@ function editarJuego(idJuego) {
         var validado = 0;
 
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Parece que va bien");
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Parece que va bien");
+    //     }
+    // }
     xmlhttp.open("POST", "php/juegos/modificarJuegoAdmin.php", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.send('idJuego=' + idJuego +
@@ -272,6 +278,7 @@ function editarJuego(idJuego) {
     window.location = "adminView.html";
 }
 
+//Función que rellena la ventana emergente para borrar un juego con la información del juego deseado
 function rellenarModalDeleteJuegos(idSelectJuego) {
     var modalBottom = document.getElementById("footerBorrarJuego");
     document.getElementById("infoJuego").textContent = listaJuegos[idSelectJuego][2] + " (id: " + listaJuegos[idSelectJuego][0] + ") ";
@@ -280,14 +287,14 @@ function rellenarModalDeleteJuegos(idSelectJuego) {
     modalBottom.innerHTML += '<button type="button" class="btn btn-danger" onclick="borrarJuego(' + listaJuegos[idSelectJuego][0] + ')">Eliminar</button>';
 }
 
+//Función que borrar el juego deseado
 function borrarJuego(idJuego) {
-    console.log("Borrando a juego " + idJuego);
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Parece que va bien");
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Parece que va bien");
+    //     }
+    // }
     xmlhttp.open("POST", "php/juegos/borrarJuego.php", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.send('idJuego=' + idJuego);
@@ -296,6 +303,8 @@ function borrarJuego(idJuego) {
 
 // // --------------------------------------------------------------------------------------------------------------
 // // Seccion Consultar Genero
+
+//Función que crea la tabla con la información de los generos
 function tableGeneros() {
     var contentTBody = "<tbody>";
     var tabla = document.getElementById("tablaGeneros");
@@ -303,11 +312,11 @@ function tableGeneros() {
     tabla.innerHTML += '<thead><tr><th>id</th><th>nombreGenero</th><th>descripcion</th><th>Editar</th><th>Eliminar</th></tr></thead>';
 
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Parece que va bien");
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Parece que va bien");
+    //     }
+    // }
     xmlhttp.open("POST", "php/generos/buscarGeneros.php", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.addEventListener("load", function (datos) {
@@ -330,6 +339,7 @@ function tableGeneros() {
     xmlhttp.send();
 }
 
+//Función que rellena la ventana emergente para editar un genero con la información del genero deseado
 function rellenarModalEditGenero(idListaGenero) {
     document.getElementById("editNombreGenero").value = listaGeneros[idListaGenero][1];
     document.getElementById("editDescripcionGenero").value = listaGeneros[idListaGenero][2];
@@ -340,17 +350,17 @@ function rellenarModalEditGenero(idListaGenero) {
     modalBottom.innerHTML += '<button type="button" class="btn btn-primary" onclick="editarGenero(' + listaGeneros[idListaGenero][0] + ')">Guardar cambios</button>';
 }
 
+//Función que edita la información del genero deseado con la información mandada
 function editarGenero(idUser) {
-    console.log("Editando a usuario " + idUser);
     var nombreGenero = document.getElementById("editNombreGenero").value;
     var descripcionGenero = document.getElementById("editDescripcionGenero").value;
 
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Parece que va bien");
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Parece que va bien");
+    //     }
+    // }
     xmlhttp.open("POST", "php/generos/modificarGenero.php", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.send('idGenero=' + idUser +
@@ -359,6 +369,7 @@ function editarGenero(idUser) {
     window.location = "adminView.html";
 }
 
+//Función que rellena la ventana emergente para borrar un genero con la información del genero deseado
 function rellenarModalDeleteGenero(idSelectGenero) {
     var modalBottom = document.getElementById("footerBorrarGenero");
     document.getElementById("infoGenero").textContent = listaGeneros[idSelectGenero][1] + " (id: " + listaGeneros[idSelectGenero][0] + ")";
@@ -367,14 +378,14 @@ function rellenarModalDeleteGenero(idSelectGenero) {
     modalBottom.innerHTML += '<button type="button" class="btn btn-danger" onclick="borrarGenero(' + listaGeneros[idSelectGenero][0] + ')">Eliminar</button>';
 }
 
+//Función que borrar el genero deseado
 function borrarGenero(idGenero) {
-    console.log("Borrando a usuario " + idGenero);
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Parece que va bien");
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Parece que va bien");
+    //     }
+    // }
     xmlhttp.open("POST", "php/generos/borrarGenero.php", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.send('id=' + idGenero);
@@ -384,6 +395,8 @@ function borrarGenero(idGenero) {
 // // --------------------------------------------------------------------------------------------------------------
 // // --------------------------------------------------------------------------------------------------------------
 // // Seccion Añadir User
+
+//Función para añadir un nuevo usuario
 function addUser() {
     var nombreCompleto = document.getElementById("nombre");
     var username = document.getElementById("username");
@@ -391,8 +404,6 @@ function addUser() {
     var password1 = document.getElementById("password1");
     var password2 = document.getElementById("password2");
     //Valores opcionales
-    var imagen = document.getElementById("fotoPerfil");
-    var descripcion = document.getElementById("descripcionUser");
     var enlaceTwitter = document.getElementById("twitter");
     var enlaceFacebook = document.getElementById("facebook");
     var enlaceInstagram = document.getElementById("instagram");
@@ -406,7 +417,7 @@ function addUser() {
         console.log("Los valores obligatorios son validos");
 
         if (!correoLibre(email.value)) {
-            console.log("El correo es invalido");
+            // console.log("El correo es invalido");
             return false;
         }
 
@@ -414,9 +425,10 @@ function addUser() {
             validarFacebook(enlaceFacebook.value) &&
             validarInstagram(enlaceInstagram.value)) {
 
-            console.log("Los valores no obligatorios son validos");
+            // console.log("Los valores no obligatorios son validos");
             return true;
         }
+        //Si no son todos validos, se muestra mensaje de error en el campo erroneo
         else {
             if (!validarTwitter(enlaceTwitter.value))
                 document.getElementById("errorTwitter").removeAttribute("hidden");
@@ -427,9 +439,9 @@ function addUser() {
         }
         return false;
     }
-
+    //Si no son todos validos, se muestra mensaje de error en el campo erroneo
     else {
-        console.log("No es valido");
+        // console.log("No es valido");
         if (!validarNombre(nombreCompleto.value))
             document.getElementById("errorNombre").removeAttribute("hidden");
         if (!validarUsername(username.value))
@@ -445,11 +457,13 @@ function addUser() {
 
 }
 
+//Función que oculta el campo mandado
 function applyHidden(campo) {
     if (!document.getElementById(campo).hasAttribute("hidden"))
         document.getElementById(campo).hidden = true;
 }
 
+//Función que habilita el boton para validar el formulario al aceptarse los terminos y condiciones
 function confirmTerms(campo) {
     if (campo.checked)
         document.getElementById("submitButton").disabled = false;
@@ -457,16 +471,16 @@ function confirmTerms(campo) {
         document.getElementById("submitButton").disabled = true;
 }
 
+//Funcion que valida que el campo de "Nombre y apellidos" cumpla las condiciones dadas
 function validarNombre(nombre) {
-    // console.log("Validando nombre: " + nombre);
     if (nombre.length <= 0)
         return false;
     else
         return true;
 }
 
+//Funcion que valida que el campo de "Username" cumpla las condiciones dadas
 function validarUsername(username) {
-    // console.log("Validando username: " + username);
     if (username.length < 5) {
         return false;
     }
@@ -474,8 +488,8 @@ function validarUsername(username) {
         return true;
 }
 
+//Funcion que valida que el campo de "Email" cumpla las condiciones dadas
 function validarCorreo(correo) {
-    // console.log("Validando correo: " + correo);
     var validEmail = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
     if (validEmail.test(correo)) {
         return true;
@@ -485,8 +499,8 @@ function validarCorreo(correo) {
     }
 }
 
+//Funcion que valida que el campo de "Contraseña" cumpla las condiciones dadas
 function validadPassword(password) {
-    // console.log("Validando password: " + password);
     if (password.length >= 8) {
         if (password.match(/[A-Z]/)) {
             if (password.match(/\d/)) {
@@ -502,14 +516,15 @@ function validadPassword(password) {
         return false;
 }
 
+//Funcion que valida que "Contraseña" y "Confirmar contraseña" sean lo mismo
 function duplicaCorrecta(password, password2) {
-    // console.log("Validando password y password2: " + password + ", " + password2);
     if (password == password2)
         return true;
     else
         return false;
 }
 
+//Funcion que valida que el campo de "twitter" cumpla las condiciones dadas
 function validarTwitter(urlTwitter) {
     if (urlTwitter.length == 0)
         return true;
@@ -521,6 +536,7 @@ function validarTwitter(urlTwitter) {
     }
 }
 
+//Funcion que valida que el campo de "facebook" cumpla las condiciones dadas
 function validarFacebook(urlFacebook) {
     if (urlFacebook.length == 0)
         return true;
@@ -532,6 +548,7 @@ function validarFacebook(urlFacebook) {
     }
 }
 
+//Funcion que valida que el campo de "instagram" cumpla las condiciones dadas
 function validarInstagram(urlInstagram) {
     if (urlInstagram.length == 0)
         return true;
@@ -543,22 +560,21 @@ function validarInstagram(urlInstagram) {
     }
 }
 
+//Funcion que valida que el correo introducido no este ya en uso
 function correoLibre(correo) {
-    // console.log("Entrando a mirara correro");
     var estaLibre = true;
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Parece que va bien");
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Parece que va bien");
+    //     }
+    // }
     xmlhttp.open("POST", "php/usuarios/buscarUsuarioEmail.php", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.addEventListener("load", function (datos) {
         var respuesta = datos.target.response.toString();
         respuesta = respuesta.replaceAll(" ", '');
         if (respuesta == "false") {
-            // console.log("Se supone que es false");
             estaLibre = false;
         }
 
@@ -570,8 +586,9 @@ function correoLibre(correo) {
 // // --------------------------------------------------------------------------------------------------------------
 // // --------------------------------------------------------------------------------------------------------------
 // // Seccion Añadir Genero
+
+//Función para añadir un nuevo genero
 function addGenero() {
-    console.log("Introduciendo un nuevo genero");
     var nombreGenero = document.getElementById("addNombreGenero");
     var descripcionGenero = document.getElementById("addDescripcionGenero");
 
@@ -579,13 +596,12 @@ function addGenero() {
     console.log(descripcionGenero.value);
 
     if (nombreGenero.value.length >= 5) {
-        console.log("Todo correcto, metiendo nuevo user");
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                console.log("Parece que va bien")
-            }
-        }
+        // xmlhttp.onreadystatechange = function () {
+        //     if (this.readyState == 4 && this.status == 200) {
+        //         console.log("Parece que va bien")
+        //     }
+        // }
         xmlhttp.open("POST", "php/generos/addGenero.php", true);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send("nombreGenero=" + nombreGenero.value +
@@ -600,22 +616,23 @@ function addGenero() {
 // // --------------------------------------------------------------------------------------------------------------
 // // --------------------------------------------------------------------------------------------------------------
 // // Seccion Revisar Juegos
+
+//Función para obtener e imprimir una lista con los juegos que no han sido validados
 function obtenerJuegosNoValidados() {
     var cartaJuego = document.getElementById("cardJuegosNoValidados");
     cartaJuego.innerHTML = '';
 
-
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Parece que va bien");
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Parece que va bien");
+    //     }
+    // }
     xmlhttp.open("POST", "php/juegos/buscarJuegosNoValidados.php", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.addEventListener("load", function (datos) {
         listaJuegos = JSON.parse(datos.target.response);
-        console.log(listaJuegos);
+        // console.log(listaJuegos);
         for (var i = 0; i < listaJuegos.length; i++) {
             // colocarJuego(listaJuegos[i][5],listaJuegos[i][0]);
             var contentTBody = "<div class='card' id='cardJuego" + listaJuegos[i][0] + "'>" +
@@ -641,26 +658,27 @@ function obtenerJuegosNoValidados() {
     xmlhttp.send();
 }
 
+//Función para obtener de forma correcta el nombre del juego a descargar, y solicitar su descarga
 function colocarJuego(rutaJuego) {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Parece que va bien, colocando juego sin validar");
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Parece que va bien, colocando juego sin validar");
+    //     }
+    // }
     xmlhttp.open("POST", "php/juegos/sacarNombreFichero.php", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.addEventListener("load", function (datos) {
         var nombreFichero = datos.target.response;
-        console.log(nombreFichero);
         DownloadFromUrl(nombreFichero, rutaJuego);
     });
     xmlhttp.send("rutaArchivo=" + rutaJuego);
 }
 
+//Función para descargar un archivo con el nombre y la ruta dada
 function DownloadFromUrl(fileName, rutaJuego) {
     var link = document.createElement('a');
-    link.href = rutaJuego.replace('C:/wamp64/www/', '');
+    link.href = rutaJuego;
     link.download = fileName.substring(0, (fileName.length - 2));
 
     document.body.appendChild(link);
@@ -668,13 +686,14 @@ function DownloadFromUrl(fileName, rutaJuego) {
     document.body.removeChild(link);
 }
 
+//Función para validar el juego deseado
 function validarJuego(idJuego) {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Parece que va bien, validemos el juego de id " + idJuego);
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Parece que va bien, validemos el juego de id " + idJuego);
+    //     }
+    // }
     xmlhttp.open("POST", "php/juegos/validarJuego.php", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.send("idJuego=" + idJuego);
@@ -685,14 +704,14 @@ function validarJuego(idJuego) {
     mostrarToast('validacionAceptada');
 }
 
+//Función para rechazar el juego deseado
 function rechazarJuego(idJuego) {
-    console.log("Rechazando el juego con id " + idJuego);
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Parece que va bien, rechazando el juego con id " + idJuego);
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Parece que va bien, rechazando el juego con id " + idJuego);
+    //     }
+    // }
     xmlhttp.open("POST", "php/juegos/borrarJuego.php", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.send("idJuego=" + idJuego);
@@ -705,25 +724,23 @@ function rechazarJuego(idJuego) {
 // // --------------------------------------------------------------------------------------------------------------
 // // --------------------------------------------------------------------------------------------------------------
 // // Seccion Solicitudes Developer
+
+//Función para obtener la lista de usuarios que solicitan ascender
 function obtenerSolicitudesDeveloper() {
     document.getElementById("cardUsuarioNoDeveloper").innerHTML = "";
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Cojamos la lista de solicitudes");
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Cojamos la lista de solicitudes");
+    //     }
+    // }
     xmlhttp.open("POST", "php/usuarios/developerComprobarSolicitudes.php", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.addEventListener("load", function (datos) {
         listaIdUsers = JSON.parse(datos.target.response);
         console.log(listaIdUsers);
-        if (listaIdUsers == null) {
-            console.log("No hay solicitudes");
-        }
-        else {
+        if (listaIdUsers != null) {
             for (var i = 0; i < listaIdUsers.length; i++) {
-                // obtenerDatosUser(listaIdUsers[i][1]);
                 colocarUser(listaIdUsers[i]);
             }
         }
@@ -731,8 +748,8 @@ function obtenerSolicitudesDeveloper() {
     xmlhttp.send();
 }
 
+//Función para imprimir una lista con los usuarios que solicitan ascender a developer
 function colocarUser(datosUser) {
-    console.log(datosUser);
     var contentTBody = "<div class='card' id='cardAscenso" + datosUser[0] + "'>" +
         "<div class='card-header'>" +
         "<div class='row'>" +
@@ -753,13 +770,14 @@ function colocarUser(datosUser) {
     document.getElementById("rechazarAscenso" + datosUser[0][0]).setAttribute("onclick", "rechazarDeveloper('" + datosUser[0][0] + "')");
 }
 
+//Función para validar el ascenso del usuario deseado
 function validarDeveloper(idUser) {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Ascendiendo al user " + idUser);
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Ascendiendo al user " + idUser);
+    //     }
+    // }
     xmlhttp.open("POST", "php/usuarios/developerAscender.php", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.send("idUser=" + idUser);
@@ -771,9 +789,8 @@ function validarDeveloper(idUser) {
     quitarSolicitudDeveloper(idUser);
 }
 
+//Función para rechazar el ascenso del usuario deseado
 function rechazarDeveloper(idUser) {
-    console.log("Rechazando el user " + idUser);
-
     var elem = document.getElementById("cardAscenso" + idUser);
     elem.parentNode.removeChild(elem);
 
@@ -781,24 +798,23 @@ function rechazarDeveloper(idUser) {
     quitarSolicitudDeveloper(idUser);
 }
 
+//Función para borrar la solicitud de ascenso del usuario deseado
 function quitarSolicitudDeveloper(idUser) {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Ascendiendo al user " + idUser);
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Ascendiendo al user " + idUser);
+    //     }
+    // }
     xmlhttp.open("POST", "php/usuarios/developerBorrarSolicitud.php", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.send("idUser=" + idUser);
 }
 
+//Función para mostrar el mensaje emergente que se especifique
 function mostrarToast(toast) {
     var toastLiveExample = document.getElementById(toast);
     var toast = new bootstrap.Toast(toastLiveExample);
     toast.show();
 }
-
-
-
 

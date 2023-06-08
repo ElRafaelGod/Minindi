@@ -1,4 +1,5 @@
 <?php
+//Incluye los valores de la base de datos usada en la pagina web
     function conexion() {
         $bdhost = "localhost";
         $bddatabase = "rafabd";

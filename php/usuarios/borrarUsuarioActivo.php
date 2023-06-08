@@ -1,4 +1,5 @@
 <?php
+//Realiza conexión con la base de datos, y una vez conectado, se elimina al usuario conectado de la tabla "Usuarios"
     session_start();
 
     header('Access-Control-Allow-Origin: *'); 
@@ -10,7 +11,7 @@
         die("No ha podido conectarse con la base de datos: ".mysqli_connect_error());
     }
     else{
-        echo "Conexion realizada con exito <br>";
+        // echo "Conexion realizada con exito <br>";
         $id = $_SESSION['idUser'];
 
         $bd1->query("DELETE FROM usuarios WHERE id='$id'");

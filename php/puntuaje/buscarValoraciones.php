@@ -1,4 +1,6 @@
 <?php
+//Realiza conexión con la base de datos, y una vez conectado, se buscan todos los puntuajes registrados en la tabla "Puntuaje" de
+//un juego especificado, y se devuelve el resultado
     header('Access-Control-Allow-Origin: *'); 
     header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
     require("../conexion.php");

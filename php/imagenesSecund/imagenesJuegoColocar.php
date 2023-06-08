@@ -1,4 +1,6 @@
 <?php
+//Realiza conexión con la base de datos, y una vez conectado, se solicita las rutas de las imagenes de la tabla "ImagenSecund" del
+//juego especificado, y se devuelve el resultado
     header('Access-Control-Allow-Origin: *'); 
     header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
     require("../conexion.php");
@@ -19,7 +21,6 @@
           $resp[]=$reg;
         }
 
-        $listaImagenes = [];
         $cad=json_encode($resp);
         echo $cad;
     }

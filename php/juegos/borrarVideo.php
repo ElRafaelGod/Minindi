@@ -1,4 +1,6 @@
 <?php
+//Realiza conexión con la base de datos, y una vez conectado, comprueba si hay un video asociado al juego especificado en la tabla
+//"Juegos". De haberlo, elimina el video de la carpeta, y vacia su ruta guardada en la base de datos
     session_start();
 
     header('Access-Control-Allow-Origin: *'); 
@@ -25,14 +27,10 @@
 
         }
 
-        $rutaVideo = $resp[0][0];
+        $rutaDemo = $resp[0][0];
 
-        echo $rutaVideo."<br>";
-        if($rutaVideo == ""){
-            echo "No hay video puesto";
-        }
-        else{
-            echo "SI hay un video puesto. Ole";
+        // echo $rutaDemo."<br>";
+        if($rutaDemo != ""){
             unlink($rutaRaiz.$resp[0][0]);
             $bd1->query("UPDATE juegos SET video='' WHERE id='$idJuego'");    
         }

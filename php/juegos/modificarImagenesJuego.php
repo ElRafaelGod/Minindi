@@ -1,4 +1,10 @@
 <?php
+//Realiza conexión con la base de datos, y una vez conectado:
+//  1. Recoge las rutas guardadas de las imagenes de la tabla "ImagenSecund" del juego seleccionado. 
+//  2. Se eliminan las imagenes de la carpeta a traves de las rutas obtenidas, y se eliminan sus registros de la tabla "ImagenSecund"
+//  3. Se generan nuevas rutas para las nuevas imagenes, se guardan en la carpeta del juego, y se registran nuevamente en
+    // la tabla "ImagenSecund"
+//  4. Tras un segundo de pausa, se redirige a la ruta guardada, y se borra la sesion "RutaGuardada"
     session_start();
 
     header('Access-Control-Allow-Origin: *'); 
@@ -12,13 +18,13 @@
         die("No ha podido conectarse con la base de datos: ".mysqli_connect_error());
     }
     else{
-        echo "Conexion realizada con exito <br>";
+        // echo "Conexion realizada con exito <br>";
 
         $url = $_SESSION['rutaGuardada'];
         $datos = parse_url($url);
         parse_str($datos['query'], $output);
         $idJuego = $output['id'];
-        echo $idJuego."<br>";
+        // echo $idJuego."<br>";
 
         $lista=mysqli_query($bd1,"SELECT rutaImagen FROM imagensecund WHERE idJuego=$idJuego");
 
@@ -33,14 +39,14 @@
 
 
         $rutaImagen = pathinfo($resp[0][0], PATHINFO_DIRNAME);
-        echo $rutaImagen."<br>";
+        // echo $rutaImagen."<br>";
 
         $nombreImagen = pathinfo($resp[0][0], PATHINFO_FILENAME);
         $nombreImagen = substr($nombreImagen, 0, -1);
-        echo $nombreImagen."<br>";
+        // echo $nombreImagen."<br>";
 
         $extension = pathinfo($resp[0][0], PATHINFO_EXTENSION);
-        echo $extension."<br>";
+        // echo $extension."<br>";
 
         $imagenes = $_FILES['newImagenes'];
 
@@ -48,15 +54,15 @@
 
         for ($i=0; $i < count($imagenes['name']); $i++) { 
             $rutaImagenSec=$rutaImagen."/".$nombreImagen."_img".$i.".".$extension;
-            echo $rutaImagenSec."<br>";
+            // echo $rutaImagenSec."<br>";
 
             $ruta_destino =$rutaRaiz."/".$rutaImagenSec; // Ruta completa de destino
-            echo $ruta_destino."<br>";
+            // echo $ruta_destino."<br>";
 
             if (move_uploaded_file($imagenes['tmp_name'][$i], $ruta_destino)) {
-                // echo 'El video se ha subido correctamente a la carpeta de destino <br>.';
+                echo 'El video se ha subido correctamente a la carpeta de destino <br>.';
             } else {
-                // echo 'Error al subir el archivo.';
+                echo 'Error al subir el archivo.';
             }
 
             $bd1->query("INSERT into imagensecund (idJuego,rutaImagen) VALUES 

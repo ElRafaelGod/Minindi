@@ -2,10 +2,12 @@ var listaGeneros;
 var generosSelected = [];
 verifyUser();
 
+//A traves de jQuery, una vez que el documento ha sido cargado totalmente, carga su codigo dado
 $(document).ready(function () {
     escribirGeneros();
 });
 
+//Función que verifica que el usuario conectado es considerado valido para visitar la pagina
 function verifyUser() {
     var xmlhttp = new XMLHttpRequest();
     // xmlhttp.onreadystatechange = function () {
@@ -18,6 +20,8 @@ function verifyUser() {
     xmlhttp.addEventListener("load", function (datos) {
         const jsonDatos = JSON.parse(datos.target.response);
         // console.log(jsonDatos);
+        //Si los datos recibidos del usuario conectado son null (no hay una cuenta activa), o no es developer o admin,
+        //se redirige a otra página
         if (jsonDatos != null) {
             var noPuedeEstar = false;
 
@@ -37,6 +41,7 @@ function verifyUser() {
     xmlhttp.send();
 }
 
+//Función que imprime los generos disponibles en el formulario
 function escribirGeneros() {
     var cajaGeneros = document.getElementById("cajaGeneros");
 
@@ -64,38 +69,17 @@ function escribirGeneros() {
 
 }
 
+//Función que valida los campos del formulario, y si todos los campos mirados son correctos, sube un nuevo juego.
+//Si no, se muestra un mensaje de error en el campo que presente el error
 function addJuego() {
     var tituloJuego = document.getElementById("tituloJuego");
-    var descripcionJuego = document.getElementById("descripcionJuego");
     var ficheroJuego = document.getElementById("ficheroJuego");
     var precio = document.getElementById("precio");
     var miniatura = document.getElementById("miniatura");
     var imagenesSecundarias = document.getElementById("imagenesSecundarias");
-    var video = document.getElementById("video");
-    var demo = document.getElementById("demo");
 
     if(precio.value == "")
         precio.value = 0;
-
-    // console.log(precio.value);
-    
-    // console.log(tituloJuego.value);
-    // console.log(descripcionJuego.value);
-    // console.log(ficheroJuego.value);
-    // console.log(precio.value);
-    // console.log(miniatura.value);
-    // console.log(imagenesSecundarias.value);
-    // console.log(video.value);
-    // console.log(demo.value);
-
-    // console.log(miniatura.files);
-    // console.log(imagenesSecundarias.files);
-
-    // validarTituloJuego(tituloJuego.value);
-    // validarJuegoSubido(ficheroJuego.files);
-    // validarMiniatura(miniatura.files);
-    // validarImagenesSec(imagenesSecundarias.files);
-    // validarGeneros();
 
     if (validarTituloJuego(tituloJuego.value) &&
         validarJuegoSubido(ficheroJuego.files) &&
@@ -134,11 +118,13 @@ function addJuego() {
     return false;
 }
 
+//Función que oculta el campo mandado
 function applyHidden(campo) {
     if (!document.getElementById(campo).hasAttribute("hidden"))
         document.getElementById(campo).hidden = true;
 }
 
+//Funcion que valida que el campo de "Titulo del juego" cumpla las condiciones dadas
 function validarTituloJuego(titulo) {
     if (titulo.length <= 0)
         return false;
@@ -146,6 +132,7 @@ function validarTituloJuego(titulo) {
         return true;
 }
 
+//Funcion que valida que el campo de "Precio" cumpla las condiciones dadas
 function validarPrecio(precio) {
     if (precio < 0.00)
         return false;
@@ -153,36 +140,24 @@ function validarPrecio(precio) {
         return true;
 }
 
+//Funcion que valida que el campo de "JuegoSubido" cumpla las condiciones dadas
 function validarJuegoSubido(archivo) {
-    // console.log("Informacion archivo:");
-    // console.log(archivo);
-    // console.log(archivo[0].name);
-
     if (archivo.length <= 0)
         return false;
     else
         return true;
 }
 
+//Funcion que valida que el campo de "Miniatura" cumpla las condiciones dadas
 function validarMiniatura(imagen) {
-    // console.log("Informacion miniatura:");
-    // console.log(imagen);
-    // console.log(imagen[0].name);
-
     if (imagen.length <= 0)
         return false;
     else
         return true;
 }
 
+//Funcion que valida que el campo de "Imagenes secundarias" cumpla las condiciones dadas
 function validarImagenesSec(imagenes) {
-    // console.log(imagenes);
-
-    // for (var i = 0; i < imagenes.length; i++){
-    //     console.log(imagenes[i].name);
-    // }
-    // console.log(imagenes);
-
     if (imagenes.length <= 0){
         document.getElementById("errorImagSec").textContent = "Debes subir al menos una imagen del juego";
         return false;
@@ -195,6 +170,7 @@ function validarImagenesSec(imagenes) {
         return true;
 }
 
+//Funcion que valida que se haya seleccionado al menos un genero
 function validarGeneros() {
     var esValido = false;
     generosSelected = [];
@@ -205,14 +181,12 @@ function validarGeneros() {
             esValido = true;
         }
     }
-    // console.log("¿Es valido? "+esValido);
-    // console.log(generosSelected);
     return esValido;
 }
 
+//Función que valida que el captcha ha sido aceptado
 function validarCaptcha(){
     var response = grecaptcha.getResponse();
-    // console.log(response);
     if (response.length <= 0)
         return false;
     else

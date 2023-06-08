@@ -1,4 +1,5 @@
 <?php
+//Realiza conexión con la base de datos, y una vez conectado, se asciende a developer al usuario de id mandada en la tabla "Usuarios" 
     header('Access-Control-Allow-Origin: *'); 
     header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
     require("../conexion.php");
@@ -8,7 +9,7 @@
         die("No ha podido conectarse con la base de datos: ".mysqli_connect_error());
     }
     else{
-        echo "Conexion realizada con exito <br>";
+        // echo "Conexion realizada con exito <br>";
         $id=$_POST['idUser'];
 
         $bd1->query("UPDATE usuarios SET esDeveloper=1 WHERE id='$id'");

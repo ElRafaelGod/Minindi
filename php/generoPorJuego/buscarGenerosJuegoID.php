@@ -1,6 +1,11 @@
 <?php
-    // header('Access-Control-Allow-Origin: *'); 
-    // header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+//Realiza conexion a la base de datos, y una vez conectado:
+//  1. Obtiene la id de los géneros asociados a un juego especifico de la tabla "GeneroPorJuego"
+//  2. Obtiene la lista completa de los generos registrados en la tabla "Generos"
+//  3. Se saca de la lista completa de los generos los resultados cuyas ids coincidan con los deseados, se guardan en un array, y 
+    // se devuelve el array resultante
+    header('Access-Control-Allow-Origin: *'); 
+    header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
     require("../conexion.php");
     $bd1=conexion();
 

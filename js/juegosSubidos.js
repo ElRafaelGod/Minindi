@@ -1,45 +1,49 @@
 var esUserConectado = false;
 var esDeveloper = false;
 
+//A traves de jQuery, una vez que el documento ha sido cargado totalmente, carga su codigo dado
 $(document).ready(function () {
     verificarUser();
 });
 
+//Función que verifica qué usuario es del que se debe buscar la informacion. 
+// -Si la URL no tiene la variable ID, se buscará informacion sobre el usuario conectado
+// -Si la URL tiene la variable ID, se comprobará a que usuario pertenece la ID, y se buscara su informacion
 function verificarUser() {
     const valores = window.location.search;
     const urlParams = new URLSearchParams(valores);
     var idExterna = urlParams.get('id');
-    console.log(idExterna);
+    // console.log(idExterna);
 
     if(idExterna == null){
-        console.log("Es el perfil del propio usuario");
+        // console.log("Es el perfil del propio usuario");
         esUserConectado = true;
         dataUserConectado();
     }
     else if(!Number(idExterna)){
-        console.log("La URL no tiene una id");
+        // console.log("La URL no tiene una id");
         errorUsuarioNoExiste();
     }
     else{
-        console.log("La URL si tiene una id");
+        // console.log("La URL si tiene una id");
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                console.log("Parece que va bien");
-            }
-        }
+        // xmlhttp.onreadystatechange = function () {
+        //     if (this.readyState == 4 && this.status == 200) {
+        //         console.log("Parece que va bien");
+        //     }
+        // }
         xmlhttp.open("POST", "php/usuarios/esMismoUser.php", false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.addEventListener("load", function (datos) {
             const respuesta = datos.target.response;
-            console.log("'"+respuesta+"'");
+            // console.log("'"+respuesta+"'");
             if(respuesta == 1){
-                console.log("El usuario esta viendo su propia cuenta")
+                // console.log("El usuario esta viendo su propia cuenta")
                 esUserConectado = true;
                 dataUserConectado();
             }
             else{
-                console.log("El usuario esta viendo otra cuenta ajena")
+                // console.log("El usuario esta viendo otra cuenta ajena")
                 dataUserExterno(idExterna);
             }
             
@@ -48,8 +52,9 @@ function verificarUser() {
     }
 }
 
+//Función que ajustará el menu de navegación cuando se mire a un usuario diferente del conectado 
 function ajustesUserExterno(id) {
-    console.log("Viendo las cosas de '"+id+"'");
+    // console.log("Viendo las cosas de '"+id+"'");
     document.getElementById("listaDeseos").hidden= true;
     document.getElementById("configuracion").hidden= true;
     document.getElementById("listaDeseos2").hidden= true;
@@ -65,36 +70,39 @@ function ajustesUserExterno(id) {
     document.getElementById("juegosPublicados2").href = "juegosSubidos.html?id="+id;
 }
 
+//Función que manda recoger la información del usuario activo, comprobar si es developer, y mandar listar sus juegos publicados
 function dataUserConectado() {
-    console.log("Verificando rango conectado");
+    // console.log("Verificando rango conectado");
     var dataUser = obtenerDataUser("buscarUsuarioActivo.php");
-    console.log(dataUser);
+    // console.log(dataUser);
     if(dataUser[0][11] == 1)
         esDeveloper = true;
     
-    console.log(esDeveloper);
+    // console.log(esDeveloper);
     buscarJuegos(dataUser[0][0]);
     
 }
 
+//Función que manda recoger la información de un usuario especificado, para mandar listar sus juegos publicados
 function dataUserExterno(id) {
-    console.log("Verificando rango tio externo");
+    // console.log("Verificando rango tio externo");
     const dataUser = obtenerDataUser("buscarUsuarioID.php",id);
     ajustesUserExterno(id);
-    console.log(dataUser);
+    // console.log(dataUser);
     document.getElementById("usernameCreador").textContent = "Juegos publicados por "+dataUser[0][3];
     document.title = "Juegos publicados por "+dataUser[0][3];
     buscarJuegos(dataUser[0][0]);
 }
 
+//Función que manda obtener datos del usuario especificado segun la ruta de llamada
 function obtenerDataUser(url,id){
     var xmlhttp = new XMLHttpRequest();
     var datosUser;
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Parece que va bien")
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Parece que va bien")
+    //     }
+    // }
     xmlhttp.open("POST", "php/usuarios/"+url, false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.addEventListener("load", function (datos) {
@@ -104,18 +112,20 @@ function obtenerDataUser(url,id){
     return datosUser;
 }
 
+//Función que busca los juegos desarrollados por un usuario especificado y manda imprimirlos. 
+//En caso de no tener juegos subidos, o no ser developer, se mostrará un mensaje diferente
 function buscarJuegos(idUser) {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Parece que va bien, cojamos el juego que es")
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Parece que va bien, cojamos el juego que es")
+    //     }
+    // }
     xmlhttp.open("POST", "php/juegos/buscarJuegosIDUser.php", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.addEventListener("load", function (datos) {
         listaJuegos = JSON.parse(datos.target.response);
-        console.log(listaJuegos);
+        // console.log(listaJuegos);
         if(listaJuegos != null)
             cargarJuegos(listaJuegos);
         else{
@@ -136,26 +146,20 @@ function buscarJuegos(idUser) {
     xmlhttp.send("idUser="+idUser);
 }
 
+//Función para imprimir los juegos comprados en pantalla
 function cargarJuegos(listaJuegos) {
     var cuerpoJuegosHechos =  document.getElementById("cuerpoJuegosHechos");
-    var rutaTemporal;
-
-    console.log(listaJuegos.length);
-    if(listaJuegos.length > 9){
-        console.log("Hay suficientes juegos para rellenar");
-        document.getElementById("footer").classList.remove("fixed-bottom");
-    }
 
     for (var i = 0; i < listaJuegos.length; i++) {
         if(!esUserConectado && listaJuegos[i][9] == 0){
-            continue
+            continue;
         }
         else{
             var estadoJuego;
             var botonModificar;
-            // rutaTemporal = "/ArchivosTemporales/"+colocarMiniatura(listaJuegos[i][0], listaJuegos[i][6]);
-            // console.log("Ruta: "+rutaTemporal);
-    
+            
+            //Si son los juegos subidos del usuario conectado, se mostrará el estado de validación del juego, además de
+            //añadir un boton que permita modificar los datos del juego 
             if(esUserConectado){
                 if (listaJuegos[i][9] == 0) {
                     estadoJuego = '<div class="card-header bg-danger">'+
@@ -192,49 +196,17 @@ function cargarJuegos(listaJuegos) {
                                                 
             cuerpoJuegosHechos.innerHTML += contentCuerpoJuegos;
             setTimeout('fadeInJuego(".box'+listaJuegos[i][0]+'")', 200);
-            // setTimeout('borrarFichero("' + rutaTemporal + '")', 1000);
         }
     }
 }
 
+//Función que con jQuery hace aparecer la caja determinada
 function fadeInJuego(idCaja) {
     $(idCaja).fadeIn(1000); 
 }
 
+//Función que hace aparecer la caja de error de la página cuando no se cumple los requisitos
 function errorUsuarioNoExiste() {
     document.getElementById("contentCuerpo").hidden= true;
     document.getElementById("errorUser").hidden= false;
 }
-
-// function colocarMiniatura(idJuego) {
-//     var rutaRecogida;
-//     var xmlhttp = new XMLHttpRequest();
-//     xmlhttp.onreadystatechange = function () {
-//         if (this.readyState == 4 && this.status == 200) {
-//             console.log("Parece que va bien, colocando la miniatura...")
-//         }
-//     }
-//     xmlhttp.open("POST", "php/juegos/miniaturaColocar.php", false);
-//     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-//     xmlhttp.addEventListener("load", function (datos) {
-//         rutaRecogida = datos.target.response;
-//     });
-//     xmlhttp.send("idJuego="+idJuego);
-//     return rutaRecogida;
-// }
-
-// function borrarFichero(rutaFichero) {
-//     rutaFichero = rutaFichero.substring(0, (rutaFichero.length - 2));
-//     console.log(rutaFichero);
-//     var xmlhttp = new XMLHttpRequest();
-//     xmlhttp.onreadystatechange = function () {
-//         if (this.readyState == 4 && this.status == 200) {
-//             console.log("Borrando elemento")
-//         }
-//     }
-//     xmlhttp.open("POST", "php/borrar/borrarFichero.php", true);
-//     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-//     xmlhttp.send("rutaFichero=" + rutaFichero);
-// }
-
-

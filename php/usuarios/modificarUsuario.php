@@ -1,4 +1,5 @@
 <?php
+//Realiza conexión con la base de datos, y una vez conectado, modifica la información del usuario asociado en la tabla "Usuarios"
     session_start();
 
     header('Access-Control-Allow-Origin: *'); 
@@ -10,12 +11,11 @@
         die("No ha podido conectarse con la base de datos: ".mysqli_connect_error());
     }
     else{
-        echo "Conexion realizada con exito <br>";
+        // echo "Conexion realizada con exito <br>";
         $id=$_POST['id'];
         $nombre = $_POST['nombre'];
         $username = $_POST['username'];
         $email = $_POST['email'];
-        // $password = $_POST['password1'];
         $descripcion = $_POST['descripcion'];
         $enlaceTwitter = $_POST['enlaceTwitter'];
         $enlaceFacebook = $_POST['enlaceFacebook'];

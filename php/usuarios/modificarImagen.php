@@ -1,4 +1,9 @@
 <?php
+//Realiza conexión con la base de datos, y una vez conectado:
+//  1. Genera una nueva ruta de guardado para la nueva imagen de usuario.
+//  2. Guarda la nueva imagen en la carpeta designada, y reescribe la anterior (si la hubiese)
+//  3. Actualiza la ruta guardada en la informacion del usuario en la tabla "Usuarios"
+//  4. Un segundo despues, redirige al usuario a la pagina seleccionada
     session_start();
 
     header('Access-Control-Allow-Origin: *'); 
@@ -12,19 +17,19 @@
         die("No ha podido conectarse con la base de datos: ".mysqli_connect_error());
     }
     else{
-        echo "Conexion realizada con exito <br>";
+        // echo "Conexion realizada con exito <br>";
         $imagen = $_FILES['newImagen'];
         $id=$_SESSION['idUser'];
 
         $extension = pathinfo($imagen['name'], PATHINFO_EXTENSION);
-        echo $extension."<br>";
+        // echo $extension."<br>";
 
         $nombreImagen="id".$id.".".$extension;
-        echo $nombreImagen."<br>";
+        // echo $nombreImagen."<br>";
         
         $ruta_destino =$rutaRaiz.$rutaImagenUser.$nombreImagen; // Ruta completa de destino
-        echo $imagen["tmp_name"]."<br>";
-        echo $ruta_destino."<br>";
+        // echo $imagen["tmp_name"]."<br>";
+        // echo $ruta_destino."<br>";
         
         if (move_uploaded_file($imagen["tmp_name"], $ruta_destino)) {
             echo 'El archivo se ha subido correctamente a la carpeta de destino.';

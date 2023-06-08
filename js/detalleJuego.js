@@ -6,16 +6,23 @@ var usuarioConectado;
 var juegoValorado = false;
 var tieneVideo = false;
 
+//A traves de jQuery, una vez que el documento ha sido cargado totalmente, carga su codigo dado
 $(document).ready(function () {
     cargarJuegos();
     usuarioConectado = userConectado();
 });
 
+// Función para cargar la información del juego deseado, siempre que cumpla las condiciones dadas. 
+//Se cargará si:
+//     -Es un juego validado
+//     -Es un juego no validado, siendo visto por su creador
+// No se cargará el juego si:
+//     -El juego no existe (la id no corresponde a ningun juego)
+//     -El juego a mirar no ha sido validado, y no es visto por su creador
 function cargarJuegos() {
     const valores = window.location.search;
     const urlParams = new URLSearchParams(valores);
     var idExterna = urlParams.get('id');
-    // console.log(idExterna);
 
     var xmlhttp = new XMLHttpRequest();
     // xmlhttp.onreadystatechange = function () {
@@ -27,12 +34,8 @@ function cargarJuegos() {
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.addEventListener("load", function (datos) {
         detalleJuego = JSON.parse(datos.target.response);
-        console.log(detalleJuego);
-
         if(detalleJuego != null){
-            // console.log("El juego existe");
             if(detalleJuego[0][9] == 0 && esCreador(detalleJuego[0][1])){
-                // console.log("Es el creador de este juego no validado");
                 configurarJuego(detalleJuego);
             }
             else if(detalleJuego[0][9] == 0){
@@ -54,8 +57,8 @@ function cargarJuegos() {
     xmlhttp.send('idJuego='+idExterna);
 }
 
+//Función que escribe todos los datos referentes al juego y comprueba todas las interacciones del usuario con el juego
 function configurarJuego(detalleJuego){
-    // console.log(detalleJuego);
     esDeseo();
     enCesta();
     juegoComprado();
@@ -84,8 +87,8 @@ function configurarJuego(detalleJuego){
         document.getElementById("cajaDemo").hidden = true;
     else
         document.getElementById("botonDemo").setAttribute("onclick","colocarDemo('"+detalleJuego[0][8]+"')");
-    // colocarMiniatura(detalleJuego[0][0]);
 
+    //Dependiendo de si el juego tiene asignado un video o no, se llamará a una u otra función
     if (tieneVideo)
         colocarImagenesYVideo(detalleJuego[0][0]);
     else
@@ -94,8 +97,8 @@ function configurarJuego(detalleJuego){
     colocarGeneros(detalleJuego[0][0]);
 }
 
+//Función que coloca los datos del creador del juego
 function colocarCreadorDatos(idCreador,element){
-    // console.log("El elemento a modificar es "+element);
     var xmlhttp = new XMLHttpRequest();
     // xmlhttp.onreadystatechange = function () {
     //     if (this.readyState == 4 && this.status == 200) {
@@ -112,10 +115,10 @@ function colocarCreadorDatos(idCreador,element){
     xmlhttp.send("id="+idCreador);
 }
 
+//Función que comprueba que el usuario conectado es el creador del juego
 function esCreador(idCreador){
     var esCreador = false;
     if(idCreador == undefined){
-        // console.log("Es undefeaned");
         idCreador = 0;
     }
     var xmlhttp = new XMLHttpRequest();
@@ -134,20 +137,19 @@ function esCreador(idCreador){
             // console.log("Son iguales");
             esCreador = true;
         }
-        // else
-        //     console.log("Son diferentes");
     });
     xmlhttp.send();
     return esCreador;
 }
 
+//Función que coloca la fecha de publicación del juego
 function colocarFecha(idJuego){
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Parece que va bien, recojamos la fecha de publicacion")
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Parece que va bien, recojamos la fecha de publicacion")
+    //     }
+    // }
     xmlhttp.open("POST", "php/juegopordeveloper/buscarDatosID.php", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.addEventListener("load", function (datos) {
@@ -158,6 +160,7 @@ function colocarFecha(idJuego){
     xmlhttp.send("idJuego="+idJuego);
 }
 
+//Función que coloca las imagenes asignadas al juego
 function colocarImagenes(idJuego) {
     var xmlhttp = new XMLHttpRequest();
     // xmlhttp.onreadystatechange = function () {
@@ -169,7 +172,7 @@ function colocarImagenes(idJuego) {
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.addEventListener("load", function (datos) {
         listaImagenes = JSON.parse(datos.target.response);
-        console.log(listaImagenes);
+        // console.log(listaImagenes);
         for (i = 0; i < listaImagenes.length; i++) {
             //Crea los indicadores de la imagen y los inserta
             if(i==0)
@@ -197,6 +200,7 @@ function colocarImagenes(idJuego) {
     xmlhttp.send("idJuego="+idJuego);
 }
 
+//Función que coloca el video y las imagenes asignadas al juego
 function colocarImagenesYVideo(idJuego) {
     var xmlhttp = new XMLHttpRequest();
     // xmlhttp.onreadystatechange = function () {
@@ -208,9 +212,8 @@ function colocarImagenesYVideo(idJuego) {
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.addEventListener("load", function (datos) {
         listaImagenes = JSON.parse(datos.target.response);
-        console.log(listaImagenes);
+        // console.log(listaImagenes);
 
-        // document.getElementById("listaImagenes1").innerHTML += colocarVideo(idJuego);
         document.getElementById("listaImagenes1").innerHTML += "<div class='carousel-item active'>"+
                                                                     '<video class="img-fluid" autoplay loop controls>' +
                                                                         '<source src='+detalleJuego[0][7]+' type="video/mp4"/>'+
@@ -237,44 +240,18 @@ function colocarImagenesYVideo(idJuego) {
     xmlhttp.send("idJuego="+idJuego);
 }
 
-// function colocarVideo(idJuego) {
-//     var enlaceVideo;
-//     var xmlhttp = new XMLHttpRequest();
-//     xmlhttp.onreadystatechange = function () {
-//         if (this.readyState == 4 && this.status == 200) {
-//             console.log("Parece que va bien, coloquemos las imagenes del juego")
-//         }
-//     }
-//     xmlhttp.open("POST", "php/juegos/colocarVideo.php", false);
-//     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-//     xmlhttp.addEventListener("load", function (datos) {
-//         enlaceVideo = datos.target.response;
-//         console.log("Resultado de la llamada: ------------------------");
-//         console.log(enlaceVideo);
-//         enlaceVideo = enlaceVideo.substring(0, (enlaceVideo.length-2));
-//     });
-//     xmlhttp.send("idJuego="+idJuego);
-//     setTimeout('borrarFichero("ArchivosTemporales/'+enlaceVideo+'")',1000);       
-//     return "<div class='carousel-item active'>"+
-//                 '<video class="img-fluid" autoplay loop controls>' +
-//                     '<source src="ArchivosTemporales/'+enlaceVideo+'" type="video/mp4"/>'+
-//                 '</video>'+ 
-//             '</div>';
-// }
-
+//Función que imprime los generos asignados al juego
 function colocarGeneros(idJuego) {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Parece que va bien, coloquemos los generos del juego")
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Parece que va bien, coloquemos los generos del juego")
+    //     }
+    // }
     xmlhttp.open("POST", "php/generoPorJuego/buscarGenerosJuegoID.php", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.addEventListener("load", function (datos) {
         listaGeneros = JSON.parse(datos.target.response);
-        // console.log(listaGeneros);
-
         for (i = 0; i < listaGeneros.length; i++) {
             //Crea los indicadores de generos y los inserta
             var genero = '<button type="button" class="btn btn-secondary btn-sm me-2 mt-1" disabled>'+listaGeneros[i][1]+'</button>';
@@ -284,13 +261,14 @@ function colocarGeneros(idJuego) {
     xmlhttp.send("idJuego="+idJuego);
 }
 
+//Función que comprueba si el juego ya se encuentra en la lista de deseos del usuario
 function esDeseo() {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Comprobemos si es un juego ya favorito del usuario")
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Comprobemos si es un juego ya favorito del usuario")
+    //     }
+    // }
     xmlhttp.open("POST", "php/favoritos/esJuegoDeseado.php", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.addEventListener("load", function (datos) {
@@ -302,20 +280,20 @@ function esDeseo() {
             document.getElementById("botonDeseos").classList.add("btn-danger");
             document.getElementById("botonDeseos").classList.remove("btn-secondary");
         }
-        // console.log(respuesta);
     });
     xmlhttp.send("idJuego="+detalleJuego[0][0]); 
 
     
 }
 
+//Función que comprueba si el juego ya se encuentra en la cesta del usuario
 function enCesta() {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Miremos si ya esta en la cesta")
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Miremos si ya esta en la cesta")
+    //     }
+    // }
     xmlhttp.open("POST", "php/cesta/juegoEnCesta.php", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.addEventListener("load", function (datos) {
@@ -326,23 +304,23 @@ function enCesta() {
             document.getElementById("botonCesta").classList.add("btn-secondary");
             document.getElementById("botonCesta").classList.remove("btn-dark");
         }
-        // console.log(respuesta);
     });
     xmlhttp.send("idJuego="+detalleJuego[0][0]); 
 }
 
+//Función que comprueba si el juego ha sido valorado, y hace la media de sus valoraciones
 function haSidoValorado() {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Comprobemos si el juego tiene valoraciones")
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Comprobemos si el juego tiene valoraciones")
+    //     }
+    // }
     xmlhttp.open("POST", "php/puntuaje/buscarValoraciones.php", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.addEventListener("load", function (datos) {
         listaValoraciones = JSON.parse(datos.target.response);
-        console.log(listaValoraciones);
+        // console.log(listaValoraciones);
         if (listaValoraciones != null) {
             var mediaPuntuaciones = 0;
             for(i = 0; i<listaValoraciones.length; i++){
@@ -364,18 +342,19 @@ function haSidoValorado() {
     xmlhttp.send("idJuego="+detalleJuego[0][0]); 
 }
 
+//Función que comprueba si el usuario ya ha valorado el juego
 function valoradoPorUser(){
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Comprobemos si TU has valorado este juego")
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Comprobemos si TU has valorado este juego")
+    //     }
+    // }
     xmlhttp.open("POST", "php/puntuaje/valoradoPorUser.php", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.addEventListener("load", function (datos) {
         valoracionUser = JSON.parse(datos.target.response);
-        console.log(valoracionUser);
+        // console.log(valoracionUser);
         if (valoracionUser != null) {
             document.getElementById("star"+valoracionUser[0][3]).checked = true;
             juegoValorado = true;
@@ -384,21 +363,21 @@ function valoradoPorUser(){
     xmlhttp.send("idJuego="+detalleJuego[0][0]);
 }
 
+//Función que comprueba si el juego tiene comentarios recibidos, y los carga
 function escribirComentarios() {
     cajaComentarios = document.getElementById("comentariosJuego");
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Comprobemos si ya hay comentarios en el juego")
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Comprobemos si ya hay comentarios en el juego")
+    //     }
+    // }
     xmlhttp.open("POST", "php/comentarios/buscarComentarios.php", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.addEventListener("load", function (datos) {
         listaComentarios = JSON.parse(datos.target.response);
-        console.log(listaComentarios);
+        // console.log(listaComentarios);
         if(listaComentarios != null){
-            console.log("Hay comentarios!!!");
             listaComentarios.reverse();
             for(i = 0; i < listaComentarios.length; i++){
                 var comentario = '<div class="col-md-12 col-lg-10 col-xl-8 mb-3">'+
@@ -422,13 +401,14 @@ function escribirComentarios() {
     xmlhttp.send("idJuego="+detalleJuego[0][0]); 
 }
 
+//Función que comprueba si el juego ya ha sido comprado por el usuario
 function juegoComprado() {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Comprobemos si es un juego ya comprado")
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Comprobemos si es un juego ya comprado")
+    //     }
+    // }
     xmlhttp.open("POST", "php/juegos/esJuegoComprado.php", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.addEventListener("load", function (datos) {
@@ -442,49 +422,44 @@ function juegoComprado() {
             document.getElementById("cajaDeseos").hidden = true;
 
         }
-        // console.log(respuesta);
     });
     xmlhttp.send("idJuego="+detalleJuego[0][0]); 
 }
 
+//Función que comprueba si el usuario activo tiene una cuenta iniciada
 function userConectado() {
     var resultado = true;
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Parece que va bien, comprobemos si hay una sesion iniciada")
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Parece que va bien, comprobemos si hay una sesion iniciada")
+    //     }
+    // }
     xmlhttp.open("POST", "php/usuarios/userConectado.php", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.addEventListener("load", function (datos) {
         resp = datos.target.response;
-        console.log(resp);
         if (resp != 1) {
-            console.log("No es un usuario con cuenta encendida");
+            // console.log("No es un usuario con cuenta encendida");
             resultado = false;
-        }
-        else{
-            console.log("Es un usuario con cuenta encendida");
         }
     });
     xmlhttp.send();
     return resultado;
 }
 
+//Función que, si el usuario tiene su cuenta abierta, añade el juego a su lista de deseos. Sino, manda un aviso
 function addToDeseos() {
     if(usuarioConectado){
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                console.log("Parece que va bien, comprobemos si hay una sesion iniciada")
-            }
-        }
-        console.log(detalleJuego[0][0]);
+        // xmlhttp.onreadystatechange = function () {
+        //     if (this.readyState == 4 && this.status == 200) {
+        //         console.log("Parece que va bien, comprobemos si hay una sesion iniciada")
+        //     }
+        // }
         xmlhttp.open("POST", "php/favoritos/addJuegoDeseos.php", false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send("idJuego="+detalleJuego[0][0]);
-        console.log("Guardado a favoritos con exito");
         mostrarToast('addDeseos');
         quitarToast('quitDeseos');
 
@@ -499,19 +474,18 @@ function addToDeseos() {
     }
 }
 
+//Función que, si el usuario tiene su cuenta abierta, quita el juego de su lista de deseos. Sino, manda un aviso
 function quitToDeseos() {
     if(usuarioConectado){
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                console.log("Parece que va bien, comprobemos si hay una sesion iniciada")
-            }
-        }
-        console.log(detalleJuego[0][0]);
+        // xmlhttp.onreadystatechange = function () {
+        //     if (this.readyState == 4 && this.status == 200) {
+        //         console.log("Parece que va bien, comprobemos si hay una sesion iniciada")
+        //     }
+        // }
         xmlhttp.open("POST", "php/favoritos/borrarJuegoDeseos.php", false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send("idJuego="+detalleJuego[0][0]);
-        console.log("Borrado de favoritos con exito");
         mostrarToast('quitDeseos');
         quitarToast('addDeseos');
 
@@ -526,20 +500,19 @@ function quitToDeseos() {
     }
 }
 
+//Función que, si el usuario tiene su cuenta abierta, añade el juego a la cesta, y actualiza el numero de la cesta. Sino, manda un aviso
 function addToCesta() {
     if(usuarioConectado){
-        console.log("Bien, haremos esto de la cesta");
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                console.log("Añadamos el juego a la cesta")
-            }
-        }
+        // xmlhttp.onreadystatechange = function () {
+        //     if (this.readyState == 4 && this.status == 200) {
+        //         console.log("Añadamos el juego a la cesta")
+        //     }
+        // }
         console.log(detalleJuego[0][0]);
         xmlhttp.open("POST", "php/cesta/addJuegoCesta.php", false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send("idJuego="+detalleJuego[0][0]);
-        console.log("Guardado a favoritos con exito");
         mostrarToast('addCesta');
         quitarToast('quitCesta');
         revisarCesta();
@@ -554,20 +527,19 @@ function addToCesta() {
     }
 }
 
+//Función que, si el usuario tiene su cuenta abierta, quita el juego de la cesta, y actualiza el numero de la cesta. Sino, manda un aviso
 function quitToCesta() {
     if(usuarioConectado){
-        console.log("Bien, borraremos esto de la cesta");
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                console.log("Quitemos el juego de la cesta")
-            }
-        }
+        // xmlhttp.onreadystatechange = function () {
+        //     if (this.readyState == 4 && this.status == 200) {
+        //         console.log("Quitemos el juego de la cesta")
+        //     }
+        // }
         console.log(detalleJuego[0][0]);
         xmlhttp.open("POST", "php/cesta/borrarJuegoCesta.php", false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send("idJuego="+detalleJuego[0][0]);
-        console.log("Guardado a favoritos con exito");
         mostrarToast('quitCesta');
         quitarToast('addCesta');
         revisarCesta();
@@ -582,26 +554,27 @@ function quitToCesta() {
     }
 }
 
+//Función para obtener de forma correcta el nombre de la demo a descargar, y solicitar su descarga
 function colocarDemo(rutaJuego) {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Parece que va bien, colocando juego sin validar");
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Parece que va bien, colocando juego sin validar");
+    //     }
+    // }
     xmlhttp.open("POST", "php/juegos/sacarNombreFichero.php", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.addEventListener("load", function (datos) {
         var nombreFichero = datos.target.response;
-        console.log(nombreFichero);
         DownloadFromUrl(nombreFichero,rutaJuego);
     });
     xmlhttp.send("rutaArchivo="+rutaJuego);
 }
 
+//Función para descargar un archivo con el nombre y la ruta dada
 function DownloadFromUrl(fileName,rutaJuego) {
     var link = document.createElement('a');
-    link.href = rutaJuego.replace('C:/wamp64/www/', '');
+    link.href = rutaJuego;
     link.download = fileName.substring(0, (fileName.length-2));
 
     document.body.appendChild(link);
@@ -609,6 +582,7 @@ function DownloadFromUrl(fileName,rutaJuego) {
     document.body.removeChild(link);
 }  
 
+//Función que comprueba si el juego ha sido valorado antes por el usuario, y de ser asi, pregunte si quiere modificar su valoracion
 function juegoAntesValorado(puntuacion) {
     if(usuarioConectado){
         if (juegoValorado) {
@@ -625,14 +599,14 @@ function juegoAntesValorado(puntuacion) {
     }
 }
 
+//Función que guarda la puntuación dada al juego por el usuario conectado
 function puntuarJuego(puntuacion) {
-    console.log("La puntuacion dada al juego es "+puntuacion);
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Parece que va bien, comprobemos si hay una sesion iniciada")
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Parece que va bien, comprobemos si hay una sesion iniciada")
+    //     }
+    // }
     console.log(detalleJuego[0][0]);
     xmlhttp.open("POST", "php/puntuaje/valorarJuego.php", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -641,14 +615,14 @@ function puntuarJuego(puntuacion) {
     location.reload();
 }
 
+//Función que modifica la puntuación dada al juego por el usuario conectado
 function modificarPuntuacion(puntuacion) {
-    console.log("La nueva puntuacion dada al juego es "+puntuacion);
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Cambiemos la puntuacion dada")
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Cambiemos la puntuacion dada")
+    //     }
+    // }
     console.log(detalleJuego[0][0]);
     xmlhttp.open("POST", "php/puntuaje/modificarValoracion.php", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -657,32 +631,35 @@ function modificarPuntuacion(puntuacion) {
     location.reload();
 }
 
+//Función para mostrar el mensaje emergente que se especifique
 function mostrarToast(toast) {
     var toastLiveExample = document.getElementById(toast);
     var toast = new bootstrap.Toast(toastLiveExample);
     toast.show();
 }
 
+//Función para quitar el mensaje emergente que se especifique
 function quitarToast(toast) {
     var toastLiveExample = document.getElementById(toast);
     var toast = new bootstrap.Toast(toastLiveExample);
     toast.hide();
 }
 
+//Función que guarda la ruta del juego para redirigirlo a la pagina actual una vez se inicie sesion
 function redirigirRegistro(){
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Parece que va bien, comprobemos si hay una sesion iniciada")
-        }
-    }
-    console.log(detalleJuego[0][0]);
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Parece que va bien, comprobemos si hay una sesion iniciada")
+    //     }
+    // }
     xmlhttp.open("POST", "php/cookiesSessions/guardarRuta.php", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.send("ruta="+window.location);
     window.location = "registro.html";
 }
 
+//Función que, en caso de no haber una cuenta iniciada, bloquea la caja de comentarios
 function clickComentario() {
     if(!usuarioConectado){
         mostrarToast('noConectado');
@@ -691,6 +668,7 @@ function clickComentario() {
     }
 }
 
+//Función que registra el comentario publicado en el juego por el usuario
 function comentarJuego() {
     if(usuarioConectado){
         console.log("Esta conectado, puede comentar");
@@ -716,15 +694,3 @@ function comentarJuego() {
         document.getElementById("botonComentar").setAttribute("disabled","true");
     }
 }
-
-// function borrarFichero(rutaFichero) {
-//     var xmlhttp = new XMLHttpRequest();
-//     xmlhttp.onreadystatechange = function () {
-//         if (this.readyState == 4 && this.status == 200) {
-//             console.log("Borrando elemento")
-//         }
-//     }
-//     xmlhttp.open("POST", "php/borrar/borrarFichero.php", true);
-//     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-//     xmlhttp.send("rutaFichero="+rutaFichero);
-// }

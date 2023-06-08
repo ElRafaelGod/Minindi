@@ -2,22 +2,25 @@ var totalJuegos = 0;
 var listaId = [];
 verifyUser();
 
+//A traves de jQuery, una vez que el documento ha sido cargado totalmente, carga su codigo dado
 $(document).ready(function () {
     juegosEnCesta();
 });
 
+//Función que verifica que el usuario conectado es considerado valido para visitar la pagina
 function verifyUser() {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Parece que va bien")
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Parece que va bien")
+    //     }
+    // }
     xmlhttp.open("POST", "php/usuarios/buscarUsuarioActivo.php", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.addEventListener("load", function (datos) {
         const jsonDatos = JSON.parse(datos.target.response);
-        console.log(jsonDatos);
+        // console.log(jsonDatos);
+        //Si los datos recibidos del usuario conectado son null (no hay una cuenta activa), se redirige a otra página
         if (jsonDatos == null) {
             console.log("Se ha accedido aqui sin permiso. Echando");
             window.location = "registro.html";
@@ -26,28 +29,21 @@ function verifyUser() {
     xmlhttp.send();
 }
 
+//Función que comprueba el contenido de la cesta del usuario. Si tiene contenido, lo imprime y calcula el precio total de la compra
 function juegosEnCesta() {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Revisemos el contenido de la cesta")
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Revisemos el contenido de la cesta")
+    //     }
+    // }
     xmlhttp.open("POST", "php/cesta/buscarJuegosCesta.php", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.addEventListener("load", function (datos) {
         respuesta = JSON.parse(datos.target.response);    
         listaId = respuesta; 
-        console.log(respuesta); 
-        console.log(Object.keys(respuesta).length);
         if(Object.keys(respuesta).length != 0){
-            console.log("Hay juegos en la cesta");
-            console.log("Hay juegos en la cesta");
             document.getElementById("errorCesta").hidden= true;
-            if(Object.keys(respuesta).length > 3){
-                document.getElementById("footer").classList.remove("fixed-bottom");
-            }
-
             for(i = 0; i < Object.keys(respuesta).length; i++){
                 buscarJuego(respuesta[i]);
             }
@@ -55,29 +51,28 @@ function juegosEnCesta() {
             document.getElementById("precioFinal").textContent = totalJuegos+"€";
         }  
         else{
-            console.log("La cesta esta vacia");
+            // console.log("La cesta esta vacia");
             errorCestaVacia()
         }
     });
     xmlhttp.send();
 }
 
+//Función que cambia la caja visual por la usada para las cajas
 function errorCestaVacia() {
-    console.log("ocultando cosas");
-    // document.getElementById("listaCesta").hidden= true;
     document.getElementById("listaCesta").classList.add('d-none');
     document.getElementById("cajaPrecio").hidden= true;
     document.getElementById("errorCesta").hidden= false;
 }
 
+//Función que busca la información del juego mandado, y manda la información a colocar
 function buscarJuego(idJuego) {
     var xmlhttp = new XMLHttpRequest();
-    console.log(idJuego);
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Cojamos el juego que es")
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Cojamos el juego que es")
+    //     }
+    // }
     xmlhttp.open("POST", "php/juegos/buscarJuegosID.php", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.addEventListener("load", function (datos) {
@@ -87,12 +82,9 @@ function buscarJuego(idJuego) {
     xmlhttp.send("idJuego="+idJuego);
 }
 
+//Función que imprime el juego mandado en pantalla, y añade su valor al precio final de la compra
 function cargarJuego(juego) {
     var cuerpoListaDeseos =  document.getElementById("cajaCesta");
-    // var rutaTemporal;
-
-    console.log(juego);
-    // rutaTemporal = "/ArchivosTemporales/"+colocarMiniatura(juego[0][0], juego[0][6]);
 
     var contentCuerpoJuegos =   '<div class="col-2">'+
                                    '<div class="card juegoCesta m-3">'+
@@ -113,119 +105,72 @@ function cargarJuego(juego) {
     
     cuerpoListaDeseos.innerHTML += contentCuerpoJuegos;
     totalJuegos += parseFloat(juego[0][5]);
-    // totalJuegos = parseFloat(totalJuegos).toFixed(2)
-    console.log("Total en este momento: " +totalJuegos);
+    // console.log("Total en este momento: " +totalJuegos);
 }
 
-// function colocarMiniatura(idJuego) {
-//     var rutaRecogida;
-//     var xmlhttp = new XMLHttpRequest();
-//     xmlhttp.onreadystatechange = function () {
-//         if (this.readyState == 4 && this.status == 200) {
-//             console.log("Parece que va bien, colocando la miniatura...")
-//         }
-//     }
-//     xmlhttp.open("POST", "php/juegos/miniaturaColocar.php", false);
-//     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-//     xmlhttp.addEventListener("load", function (datos) {
-//         rutaRecogida = datos.target.response;
-//     });
-//     xmlhttp.send("idJuego="+idJuego);
-//     return rutaRecogida;
-// }
-
-// function borrarFichero(rutaFichero) {
-//     rutaFichero = rutaFichero.substring(0, (rutaFichero.length - 2));
-//     console.log(rutaFichero);
-//     var xmlhttp = new XMLHttpRequest();
-//     xmlhttp.onreadystatechange = function () {
-//         if (this.readyState == 4 && this.status == 200) {
-//             console.log("Borrando elemento")
-//         }
-//     }
-//     xmlhttp.open("POST", "php/borrar/borrarFichero.php", true);
-//     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-//     xmlhttp.send("rutaFichero=" + rutaFichero);
-// }
-
+//Función que retira el juego elegido de la cesta
 function quitToCesta(idJuego) {
-    console.log("Bien, borraremos esto de la cesta");
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Quitemos el juego de la cesta")
-        }
-    }
-    console.log(idJuego);
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Quitemos el juego de la cesta")
+    //     }
+    // }
     xmlhttp.open("POST", "php/cesta/borrarJuegoCesta.php", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.send("idJuego="+idJuego);
-    console.log("Borrado con exito");
     location.replace("cesta.html");
 }
 
+//Función que, en caso de que el total de precio sea 0, realiza la compra de los juegos en la cesta. Sino, asegura los juegos
+//de la cesta, y redirige la pantalla a ConfirmarCompra.
 function confirmCompra(){
-    console.log("Funciona confirmCompra");
-    console.log(totalJuegos);
-    console.log(listaId);
     vaciarJuegosComprar();
     if (totalJuegos == 0) {
-        console.log("Todo lo comprado es gratis, comprando todo");
         asegurarCompra()
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                console.log("Quitemos el juego de la cesta")
-            }
-        }
+        // xmlhttp.onreadystatechange = function () {
+        //     if (this.readyState == 4 && this.status == 200) {
+        //         console.log("Quitemos el juego de la cesta")
+        //     }
+        // }
         xmlhttp.open("POST", "php/cesta/confirmarCompra.php", false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send();
-        console.log("Juego comprado con exito");
         location.replace("juegosComprados.html");
     }
     else{
-        console.log("Hay cosas que pagar, PAGAAA");
         asegurarCompra();
         location.replace("confirmarCompra.html");
 
     }
 }
 
+//Función que asegura los juegos en la cesta en otra sesion de reserva
 function asegurarCompra(){
     for(i = 0; i < listaId.length; i++){
-        console.log(listaId[i]);
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                console.log("Aseguremos qué juegos van a ser comprados")
-            }
-        }
+        // xmlhttp.onreadystatechange = function () {
+        //     if (this.readyState == 4 && this.status == 200) {
+        //         console.log("Aseguremos qué juegos van a ser comprados")
+        //     }
+        // }
         xmlhttp.open("POST", "php/cesta/asegurarJuegosComprar.php", false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send("idJuego="+listaId[i]+
                      "&precioTotal="+totalJuegos);
-        // location.replace("cesta.html");
     }
 }
 
+//Función que vacia la sesion con los juegos en reserva para comprar
 function vaciarJuegosComprar(){
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("Vaciando la lista de juegos a comprar")
-        }
-    }
+    // xmlhttp.onreadystatechange = function () {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         console.log("Vaciando la lista de juegos a comprar")
+    //     }
+    // }
     xmlhttp.open("POST", "php/cesta/vaciarJuegosComprar.php", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.send();
-    console.log("Juego comprado con exito");
 }
-// function mostrarToast(toast,idJuego) {
-//     var toastLiveExample = document.getElementById(toast);
-//     var cuerpoToast = document.getElementById(toastCuerpo);
-//     cuerpoToast.innerHTML = '<p class="mb-2">El juego se ha retirado de tu cesta correctamente</p>'
-
-//     var toast = new bootstrap.Toast(toastLiveExample);
-//     toast.show();
-// }

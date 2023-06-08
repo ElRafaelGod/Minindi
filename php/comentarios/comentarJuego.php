@@ -1,4 +1,6 @@
 <?php
+//Se hace conexión con la base de datos, y una vez conectado, guarda en la tabla "Comentarios" un comentario, la id del juego
+//comentado, la id del usuario activo que ha comentado, y la fecha en la que se ha realizado el comentario
     session_start();
 
     header('Access-Control-Allow-Origin: *'); 
@@ -19,10 +21,10 @@
         date_default_timezone_set('Europe/Madrid');
         $fechaActual = date("d-m-Y h:i:s");
 
-        echo $idUser.'--<br>';
-        echo $idJuego.'--<br>';
-        echo $puntuacion.'--<br>';
-        echo $fechaActual.'--<br>';
+        // echo $idUser.'--<br>';
+        // echo $idJuego.'--<br>';
+        // echo $puntuacion.'--<br>';
+        // echo $fechaActual.'--<br>';
 
         $bd1->query("INSERT into comentarios (idUsuario,idJuego,comentario,subidoEn) VALUES 
             ('$idUser',

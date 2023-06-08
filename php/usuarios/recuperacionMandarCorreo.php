@@ -1,4 +1,7 @@
  <?php
+//Realiza conexión con la base de datos, y una vez conectado:
+//  1. Se incluye al usuario de email especificado en la tabla "Usuarios" una contraseña codificada para verificar posteriormente 
+//  2. Se manda un correo al email del usuario que ha olvidado su contraseña con un enlace para que pueda hacerlo 
     header('Access-Control-Allow-Origin: *'); 
     header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
     require("../conexion.php");

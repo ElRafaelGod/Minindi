@@ -1,4 +1,5 @@
 <?php
+//Realiza conexión con la base de datos, y una vez conectado, devuelve la informacion completa de la tabla "Usuarios" del usuario activo
     session_start();
 
     header('Access-Control-Allow-Origin: *'); 
@@ -11,7 +12,6 @@
         die("No ha podido conectarse con la base de datos: ".mysqli_connect_error());
     }
     else{
-
         if(isset($_SESSION['idUser'])){
             $idActivo = $_SESSION['idUser'];
     
@@ -26,7 +26,6 @@
     
             $cad=json_encode($resp);
             echo $cad;
-
         }
         else
             echo 'null';

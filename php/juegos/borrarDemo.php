@@ -1,4 +1,6 @@
 <?php
+//Realiza conexión con la base de datos, y una vez conectado, comprueba si hay una demo asociada al juego especificado en la tabla
+//"Juegos". De haberlo, elimina la demo de la carpeta, y vacia su ruta guardada en la base de datos
     session_start();
 
     header('Access-Control-Allow-Origin: *'); 
@@ -27,14 +29,10 @@
 
         $rutaVideo = $resp[0][0];
 
-        echo $rutaVideo."<br>";
-        if($rutaVideo == ""){
-            echo "No hay demo puesta";
-        }
-        else{
-            echo "SI hay una demo puesta. Ole";
+        // echo $rutaVideo."<br>";
+        if($rutaVideo != ""){
             unlink($rutaRaiz.$resp[0][0]);
-            $bd1->query("UPDATE juegos SET enlaceDemo='' WHERE id='$idJuego'");     
+            $bd1->query("UPDATE juegos SET enlaceDemo='' WHERE id='$idJuego'");
         }
     }   
 ?>  

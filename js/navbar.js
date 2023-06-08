@@ -1,10 +1,9 @@
 setInterval('comprobarBodySize()',200);
 setInterval('comprobarBodyWidth()',200);
 
+//Función que comprueba el rango del usuario activo, modificando la barra de navegación y el icono del usuario según el rango del usuario
 function verifyRango(){
-    // console.log("Verificando rango");
     comprobarCookies();
-    // mostrarCookies();
     recuerdameActivado();
     var xmlhttp = new XMLHttpRequest();
     // xmlhttp.onreadystatechange = function () {
@@ -84,49 +83,8 @@ function verifyRango(){
     document.querySelector('.loading-overlay').style.display = 'none';
 }
 
-// function colocarImagen(id) {
-//     var rutaTemporal;
-//     var xmlhttp = new XMLHttpRequest();
-//     // xmlhttp.onreadystatechange = function () {
-//     //     if (this.readyState == 4 && this.status == 200) {
-//     //         console.log("Parece que va bien, coloquemos la imagen...")
-//     //     }
-//     // }
-//     xmlhttp.open("POST", "php/usuarios/imagenUserColocar.php", true);
-//     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-//     xmlhttp.addEventListener("load", function (datos) {
-//         // rutaTemporal = "ArchivosTemporales/"+ datos.target.response;
-//         // rutaTemporal = "Storage/fotosPerfil/"+datos.target.response;
-//         rutaTemporal = datos.target.response;
-//         console.log(rutaTemporal);
-//         // console.log(rutaTemporal);
-//         // console.log(datos.target.response);
-//         document.getElementById("botonUser1").src = rutaTemporal;
-//         document.getElementById("botonUser2").src = rutaTemporal;
-
-//         if(document.getElementById("oldImagen")){
-//             document.getElementById("oldImagen").src = rutaTemporal;
-//         }
-
-//         // setTimeout('borrarFichero("'+rutaTemporal+'")',1000);
-//     });
-//     xmlhttp.send('id=' + id);
-// }
-
-// function borrarFichero(rutaFichero) {
-//     rutaFichero = rutaFichero.substring(0, (rutaFichero.length-2));
-//     // console.log(rutaFichero);
-//     var xmlhttp = new XMLHttpRequest();
-//     // xmlhttp.onreadystatechange = function () {
-//     //     if (this.readyState == 4 && this.status == 200) {
-//     //         console.log("Borrando elemento")
-//     //     }
-//     // }
-//     xmlhttp.open("POST", "php/borrar/borrarFichero.php", true);
-//     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-//     xmlhttp.send("rutaFichero="+rutaFichero);
-// }
-
+//Función que revisa el contenido de la cesta del usuario, modificando el numero que se muestra según el numero de juegos 
+//metidos en la cesta
 function revisarCesta() {
     var xmlhttp = new XMLHttpRequest();
     // xmlhttp.onreadystatechange = function () {
@@ -167,6 +125,7 @@ function revisarCesta() {
     xmlhttp.send();
 }
 
+//Función que comprueba si el usuario ha aceptado las cookies. Si no los ha aceptado, crea un mensaje emergente para aceptarlas
 function comprobarCookies(){
     var xmlhttp = new XMLHttpRequest();
     // xmlhttp.onreadystatechange = function () {
@@ -203,6 +162,7 @@ function comprobarCookies(){
     xmlhttp.send();
 }
 
+//Función que acepta y coloca las cookies al usuario
 function acceptCookies() {
     var xmlhttp = new XMLHttpRequest();
     // xmlhttp.onreadystatechange = function () {
@@ -215,6 +175,7 @@ function acceptCookies() {
     xmlhttp.send();
 }
 
+//Función que comprueba si la cookie "Recuerdame" esta activa. De estarlo, hace iniciar la sesión del usuario recordado
 function recuerdameActivado() {
     var xmlhttp = new XMLHttpRequest();
     // xmlhttp.onreadystatechange = function () {
@@ -224,19 +185,10 @@ function recuerdameActivado() {
     // }
     xmlhttp.open("POST", "php/cookiesSessions/recuerdameExiste.php", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlhttp.addEventListener("load", function (datos) {
-        const respuesta = datos.target.response;
-        // console.log(respuesta);
-        // if (respuesta != "") {
-        //     console.log("Existe un recuerdame");
-        // }
-        // else
-        //     console.log("Esta vacio");
-
-    });
     xmlhttp.send();
 }
 
+//Función para cerrar la sesión del usuario conectado, borrando las sesiones y la cookie "Recuerdame"
 function cerrarSesion() {
     console.log("Cerrando sesion");
     var xmlhttp = new XMLHttpRequest();
@@ -254,6 +206,7 @@ function cerrarSesion() {
     // mostrarCookies();
 }
 
+//Función para borrar la cookie "Recuerdame"
 function borrarCookies() {
     // console.log("Borrando un recuerdame");
     var xmlhttp = new XMLHttpRequest();
@@ -267,6 +220,7 @@ function borrarCookies() {
     xmlhttp.send();
 }
 
+//Función para comprobar la altura del body, para recolocar el pie de página de forma dinamica
 function comprobarBodySize() {
     if(document.body.scrollHeight >= 695)
         document.getElementById('footer').classList.remove("fixed-bottom");
@@ -274,6 +228,7 @@ function comprobarBodySize() {
         document.getElementById('footer').classList.add("fixed-bottom");
 }
 
+//Función para comprobar la anchura del body, para reescalar los formularios pequeños asignados de forma dinamica
 function comprobarBodyWidth() {
     if(document.body.scrollWidth >= 900){
         if(document.getElementById('inicioSesion')){
@@ -297,6 +252,7 @@ function comprobarBodyWidth() {
     }
 }
 
+//Función que activa la pantalla de cargando y quita la interactividad en la pantalla
 function activarPantallaCargando() {
     document.querySelector('.loading-overlay').style.display = 'flex';
 }

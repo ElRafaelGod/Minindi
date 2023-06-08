@@ -1,4 +1,6 @@
 <?php
+//Realiza conexión con la base de datos, y una vez conectado, se hace una comprobación de si el usuario activo ha mandado 
+//una solicitu de ascenso, y se devuelve el resultado de la llamada
     session_start();
 
     header('Access-Control-Allow-Origin: *'); 
@@ -20,11 +22,6 @@
         {
           $resp[]=$reg;
         }
-
-        // if($resp == null)
-        //     echo false;
-        // else
-        //     echo true;
     
         $cad=json_encode($resp);
         echo $cad;

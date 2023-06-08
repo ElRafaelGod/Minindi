@@ -1,4 +1,6 @@
 <?php
+//Realiza conexión con la base de datos, y una vez conectado, devuelve la informacion completa de la tabla "Usuarios" del usuario
+//cuya id se manda
     header('Access-Control-Allow-Origin: *'); 
     header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
     require("../conexion.php");
@@ -22,14 +24,5 @@
 
         $cad=json_encode($resp);
         echo $cad;
-
-        // if($cad == 'null'){
-        //     // echo "No hay coincidencias<br>";
-        //     echo "true";
-        // }
-        // else{
-        //     // echo "Si hay coincidencias<br>";
-        //     echo "false";
-        // }
     }   
 ?>  

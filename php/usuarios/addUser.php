@@ -1,4 +1,12 @@
 <?php
+//Realiza conexión con la base de datos, y una vez conectado:
+//  1. Se comprueba si hay una imagen para incluir. Si la hay, posteriormente se incluirá.
+//  2. Se asegura que el captcha ha sido aceptado, y si la respuesta es valida, se prosigue con la inclusión del usuario
+//  3. Se comprueba si el formulario ha sido mandado desde AdminView. en caso de que si, se comprobarán los valores extras del formulario
+//  4. Se introduce al nuevo usuario en la tabla "Usuarios" con los valores seleccionados
+//  5. Si hay una imagen de perfil incluida, se llamará a la función que guardará la imagen en la carpeta especificada, y actualiza la
+    // la ruta de la foto de perfil del nuevo usuario con la ruta del archivo
+//  6. Tras haberse introducido, se redirige al usuario a la pagina designada
     header('Access-Control-Allow-Origin: *'); 
     header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
     require("../conexion.php");
@@ -8,17 +16,7 @@
         die("No ha podido conectarse con la base de datos: ".mysqli_connect_error());
     }
     else{
-        echo "Conexion realizada con exito <br>";
-        echo "Soy AddUser <br>";
-
-        echo "<pre>";
-        print_r($_POST);
-        echo "</pre>";
-
-        echo "<pre>";
-        print_r($_FILES);
-        echo "</pre>";
-
+        // echo "Conexion realizada con exito <br>";
         $secretKey = '6LcZ4VgkAAAAAJ2aKU8bhx3YXuL4s6LpXh6GCRXL';
 
         $nombre = $_POST['nombre'];
@@ -44,24 +42,12 @@
 
         $codecPasswd = password_hash($password, PASSWORD_DEFAULT);
 
-        echo "Elemento 1: ".$nombre."<br>";
-        echo "Elemento 2: ".$username."<br>";
-        echo "Elemento 3: ".$email."<br>";
-        echo "Elemento 4: ".$password." = ".$codecPasswd."<br>";
-        echo "Elemento 5: ".$descripcion."<br>";
-        // echo "Elemento 6: ".$_FILES["fotoPerfil"]['name'].", ademas: ".$imagen['tmp_name']."<br>";
-        echo "Elemento 7: ".$urlTwitter."<br>";
-        echo "Elemento 8: ".$urlFacebook."<br>";
-        echo "Elemento 9: ".$urlInstagram."<br>";
-        echo "Hay imagen: ".$hayImagen."<br>";
-
         if(isset($_POST['g-recaptcha-response'])){
             echo "Esta puesto el captcha<br>";
             $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secretKey.'&response='.$_POST['g-recaptcha-response']);
             $responseData = json_decode($verifyResponse);
 
             if($responseData -> success){
-                echo "Lo logró...<br>";
                 if(isset($_POST['adminAdd'])){
                     echo "Lo esta metiendo un admin, redirigiendo a otra parte <br>";
                     if(isset($_POST['esDeveloper']))
@@ -73,9 +59,6 @@
                         $esAdmin = 1;
                     else
                         $esAdmin = 0;
-                        
-                    echo "Elemento 10: ".$esDeveloper."<br>";
-                    echo "Elemento 11: ".$esAdmin."<br>";
                         
                     $bd1->query("INSERT into usuarios (email,nombreCompleto,username,password,descripcion,
                                                     userTwitter,userFacebook,userInstagram,esDeveloper,esAdmin) VALUES 
@@ -141,10 +124,10 @@
 
             $id=$resp[0][0];
             $extension = pathinfo($imagen['name'], PATHINFO_EXTENSION);
-            echo $extension."<br>";
+            // echo $extension."<br>";
 
             $nombreImagen="id".$id.".".$extension;
-            echo $nombreImagen."<br>";
+            // echo $nombreImagen."<br>";
 
             $ruta_destino = $rutaRaiz.$rutaImagenUser.$nombreImagen; // Ruta completa de destino
         

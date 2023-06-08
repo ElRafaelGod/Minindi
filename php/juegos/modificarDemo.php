@@ -1,4 +1,8 @@
 <?php
+//Realiza conexión con la base de datos, y una vez conectado:
+//  1. Recoge la ruta guardada de la demo de la tabla "Juegos". Si no tiene una ruta guardada, genera una nueva.
+//  2. Se coloca la nueva demo en la carpeta del juego, y se actualiza la ruta nueva en la tabla del juego especificado
+//  3. Tras un segundo de pausa, se redirige a la ruta guardada, y se borra la sesion "RutaGuardada"
     session_start();
 
     header('Access-Control-Allow-Origin: *'); 
@@ -13,29 +17,15 @@
     }
     else{
         echo "Conexion realizada con exito <br>";
-        // $newImage=$_POST['datos'];
-        
-        // echo "<pre>";
-        // print_r($_FILES);
-        // echo "</pre>";
-
-        // echo "<pre>";
-        // print_r($_POST);
-        // echo "</pre>";
-
-        // echo "<pre>";
-        // print_r($_SESSION);
-        // echo "</pre>";
 
         $url = $_SESSION['rutaGuardada'];
         $datos = parse_url($url);
         parse_str($datos['query'], $output);
         $idJuego = $output['id'];
-        echo $idJuego."<br>";
+        // echo $idJuego."<br>";
 
         $lista=mysqli_query($bd1,"SELECT enlaceDemo FROM juegos WHERE id=$idJuego");
 
-        // var_dump($lista);
         while ($reg=mysqli_fetch_array($lista))  
         {
           $resp[]=$reg;
@@ -43,15 +33,13 @@
         }
 
         $demo = $_FILES['addDemo'];
-
-
         $rutaDemo = $resp[0][0];
-        echo "--".$rutaDemo."--<br>";
+        // echo "--".$rutaDemo."--<br>";
+
         if ($rutaDemo == "") {
-            echo "-- No hay video de antes --<br>";
+            // echo "-- No hay video de antes --<br>";
             $lista2=mysqli_query($bd1,"SELECT miniatura,nombreJuego FROM juegos WHERE id=$idJuego");
 
-            // var_dump($lista);
             while ($reg=mysqli_fetch_array($lista2))  
             {
               $resp2[]=$reg;
@@ -66,7 +54,7 @@
         echo $ruta_destino."<br>";
         
         if (move_uploaded_file($demo["tmp_name"], $ruta_destino)) {
-            echo 'El archivo se ha subido correctamente a la carpeta de destino.';
+            // echo 'El archivo se ha subido correctamente a la carpeta de destino.';
             $bd1->query("UPDATE juegos SET enlaceDemo='$rutaDemo' WHERE id='$idJuego'");
         } else {
             echo 'Error al subir el archivo.';
@@ -75,25 +63,5 @@
         sleep(1);
         unset($_SESSION['rutaGuardada']);
         header('Location: '.$url);
-
-
-        // $bd1->query("UPDATE juegos SET enlaceDemo='$rutaDemo' WHERE id='$idJuego'");
-
-        // if($hftp = ftp_connect($ftp_server)){
-        //     if(ftp_login($hftp, $ftp_user, $ftp_passwd)){
-		// 		if(!ftp_put($hftp,$rutaDemo,$video["tmp_name"])){
-		// 			echo "<p style='color: red'>Error al Establecer el Fichero</p>";
-		// 		}
-		// 		if(!ftp_close($hftp)) echo "<p style='color: red'>Error al Cerrar la Conexión</p>";
-		// 	} else {
-		// 		echo "<p style='color: red'>Error al Logear el Usuario</p>";
-		// 		exit(); 
-		// 	}
-		// } 
-        // else 
-        //     echo "<p style='color: red'>Error al Establecer la Conexión</p>";
-
-        // unset($_SESSION['rutaGuardada']);
-        // header('Location: '.$url);
     }   
 ?>  
