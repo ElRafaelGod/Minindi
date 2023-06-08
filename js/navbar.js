@@ -21,6 +21,7 @@ function verifyRango(){
             var esDeveloper = jsonDatos[0][10];
             var esAdmin = jsonDatos[0][11];
 
+            comprobarCarpetasArchivos();
             revisarCesta();
             
             //Si el usuario es un desarrollador, oculta el icono para que pueda pedir el rango de developer
@@ -255,6 +256,19 @@ function comprobarBodyWidth() {
 //Función que activa la pantalla de cargando y quita la interactividad en la pantalla
 function activarPantallaCargando() {
     document.querySelector('.loading-overlay').style.display = 'flex';
+}
+
+//Función que comprobará que las carpetas de almacenaje existen, y de no ser asi, crea las carpetas faltantes
+function comprobarCarpetasArchivos() {
+        var xmlhttp = new XMLHttpRequest();
+        // xmlhttp.onreadystatechange = function () {
+        //     if (this.readyState == 4 && this.status == 200) {
+        //         console.log("Parece que va bien")
+        //     }
+        // }
+        xmlhttp.open("POST", "php/comprobarCarpetas.php", false);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send();
 }
 
 

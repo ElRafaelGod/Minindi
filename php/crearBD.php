@@ -144,8 +144,6 @@
 
 		$bd1->query("ALTER TABLE `juegosComprados` ADD CONSTRAINT `juegosComprados_fk1` FOREIGN KEY (`idJuego`) REFERENCES `juegos`(`id`);");
 
-		// $bd1->query("ALTER TABLE `solicitudAscenso` ADD CONSTRAINT `solicitudAscenso_fk0` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios`(`id`);");
-
 		$bd1->query("ALTER TABLE `generoPorJuego` ADD CONSTRAINT `generoPorJuego_fk0` FOREIGN KEY (`idJuego`) REFERENCES `juegos`(`id`);");
 
 		$bd1->query("ALTER TABLE `generoPorJuego` ADD CONSTRAINT `generoPorJuego_fk1` FOREIGN KEY (`idGenero`) REFERENCES `genero`(`id`);");
@@ -155,7 +153,5 @@
 		$bd1->query("ALTER TABLE `juegoPorDeveloper` ADD CONSTRAINT `juegoPorDeveloper_fk0` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios`(`id`);");
 
 		$bd1->query("ALTER TABLE `juegoPorDeveloper` ADD CONSTRAINT `juegoPorDeveloper_fk1` FOREIGN KEY (`idJuego`) REFERENCES `juegos`(`id`);");
-
-		// $bd1->query("ALTER TABLE `recuperarPassword` ADD CONSTRAINT `recuperarPassword_fk0` FOREIGN KEY (`email`) REFERENCES `usuarios`(`email`);");
     }   
 ?>  
