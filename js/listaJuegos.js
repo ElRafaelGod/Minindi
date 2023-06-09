@@ -387,7 +387,9 @@ function irArriba() {
 
 //Función que imprime las etiquetas de los filtros "Orden" y "Valoración" en caso de ser incluidos
 function mostrarFiltros(caracteristica) {
-    document.getElementById("cajaMuestraFiltros").removeAttribute("hidden");
+    if (document.getElementById("cajaMuestraFiltros").hasAttribute("hidden")) {
+        document.getElementById("cajaMuestraFiltros").removeAttribute("hidden");
+    }
     if (caracteristica == "orden") {
         if (ordenMuestra == "true") {
             document.getElementById('cajaFiltros').innerHTML += '<button class="btn btn-dark mx-1" disabled>Más recientes primero</button>';
