@@ -348,18 +348,12 @@ function cargarGeneros() {
 //Función para cargar más juegos de la lista superior a 12
 function cargarMas() {
     var cuerpoJuegos = document.getElementById("cuerpoJuegos");
-    var rutaTemporal;
-
-    // console.log("Cargar más contenido, en ello");
-    // console.log(copiaListaJuegos);
-    // console.log(copiaListaJuegos.length);
 
     for (var i = (12 * numRecargas); i < copiaListaJuegos.length; i++) {
-        console.log("Añadiendo el juego numero " + i);
-        rutaTemporal = "/ArchivosTemporales/" + colocarMiniatura(copiaListaJuegos[i][0], copiaListaJuegos[i][6]);
+        //console.log("Añadiendo el juego numero " + i);
         var contentCuerpoJuegos = '<div style="display: none;" class="col-4 col-md-3 my-3 box'+copiaListaJuegos[i][0]+'">' +
                                     '<div class="card cardJuego">' +
-                                        '<img class="img-fluid" src="' + rutaTemporal + '" alt="imagenJuego">' +
+                                        '<img class="img-fluid" src="' + copiaListaJuegos[i][6] + '" alt="imagenJuego">' +
                                         '<div class="card-body">' +
                                             '<h5 class="card-title">' + copiaListaJuegos[i][2] + '</h5>' +
                                             '<a href="detalleJuego.html?id=' + copiaListaJuegos[i][0] + '" class="stretched-link"></a>' +
@@ -369,7 +363,6 @@ function cargarMas() {
 
         cuerpoJuegos.innerHTML += contentCuerpoJuegos;
         setTimeout('fadeInJuego(".box'+copiaListaJuegos[i][0]+'")', 200);
-        setTimeout('borrarFichero("'+rutaTemporal+'")',1000);
 
     }
     numRecargas++;

@@ -47,7 +47,6 @@ function cargarJuegos() {
                                                                     '<source src="'+detalleJuego[0][7]+'" type="video/mp4">'+
                                                                 '</video>';
             document.getElementById("botonQuitarVideo").removeAttribute("hidden"); 
-            document.getElementById("botonEliminar").setAttribute("onclick","borrarJuego('"+detalleJuego[0][0]+"')"); 
         }
 
         if (detalleJuego[0][8] == "")
@@ -56,6 +55,8 @@ function cargarJuegos() {
             document.getElementById("cajaTieneDemo").innerHTML = '<span class="fst-italic fs-2 text-start form-control-plaintext"">SI</span>';
             document.getElementById("botonQuitarDemo").removeAttribute("hidden");
         }
+
+        document.getElementById("botonEliminar").setAttribute("onclick","borrarJuego('"+detalleJuego[0][0]+"')");
 
     });
     xmlhttp.send('idJuego='+idExterna);
