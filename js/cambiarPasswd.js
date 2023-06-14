@@ -126,3 +126,10 @@ function duplicaCorrecta(password, password2) {
 function redirigir(){
     window.location = "registro.html";
 }
+
+function confirmCambioPasswd(campo) {
+    if (campo.checked)
+        document.getElementById("buttonCambiarPasswd").disabled = false;
+    else
+        document.getElementById("buttonCambiarPasswd").disabled = true;
+}

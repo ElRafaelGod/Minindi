@@ -613,6 +613,14 @@ function addGenero() {
     }
 }
 
+//Función que habilita el boton para validar el formulario de introducir un nuevo genero
+function confirmGenero(campo) {
+    if (campo.checked)
+        document.getElementById("submitGeneroButton").disabled = false;
+    else
+        document.getElementById("submitGeneroButton").disabled = true;
+}
+
 // // --------------------------------------------------------------------------------------------------------------
 // // --------------------------------------------------------------------------------------------------------------
 // // Seccion Revisar Juegos

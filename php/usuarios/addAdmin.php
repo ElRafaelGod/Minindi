@@ -11,7 +11,7 @@
     else{
         echo "Conexion realizada con exito <br>";
 
-        $passwd = password_hash("123456", PASSWORD_DEFAULT);
+        $passwd = password_hash("Rafamar227", PASSWORD_DEFAULT);
         $bd1->query("INSERT into usuarios (email,nombreCompleto,username,password,esDeveloper,esAdmin) VALUES 
             ('rafaelmartinezpage@gmail.com',
             'Administrador',
