@@ -71,7 +71,7 @@ function dataUserConectado() {
     var dataUser = obtenerDataUser("buscarUsuarioActivo.php");
     // console.log(dataUser);
     ponerContenidoUser(dataUser);
-    if (dataUser[0][6] != null) {
+    if (dataUser[0][6] != null && dataUser[0][6] != "") {
         // console.log("El user externo tiene imagen, poniendo...");
         document.getElementById("imgPerfil").src = dataUser[0][6];
     }

@@ -12,6 +12,13 @@
         // echo "Conexion realizada con exito <br>";
         $id = $_POST['id'];
 
+        $bd1->query("DELETE FROM comentarios WHERE idUsuario='$id'");
+        $bd1->query("DELETE FROM favoritos WHERE idUsuario='$id'");
+        $bd1->query("DELETE FROM juegopordeveloper WHERE idUsuario='$id'");
+        $bd1->query("DELETE FROM juegoscomprados WHERE idUsuario='$id'");
+        $bd1->query("DELETE FROM puntuaje WHERE idUsuario='$id'");
+        $bd1->query("DELETE FROM ventas WHERE idUsuario='$id'");
+
         $bd1->query("DELETE FROM usuarios WHERE id='$id'");
     }   
 ?>  
